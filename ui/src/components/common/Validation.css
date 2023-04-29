@@ -1,0 +1,8 @@
+span {
+  color: red;
+  font-size: 12px;
+}
+
+.invalid {
+  border: 1px solid red;
+}

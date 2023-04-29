@@ -1,0 +1,17 @@
+.book-form {
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+label {
+  color: rgb(37, 36, 36);
+}
+
+button {
+  margin-top: 25px;
+}
+
+.form-group {
+  margin-top: 10px;
+}
