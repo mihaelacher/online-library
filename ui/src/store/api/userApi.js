@@ -18,8 +18,6 @@ export const fetchUsersApi = async (token) => {
 
 export const followUserApi = async (follower, following, token) => {
   try {
-    debugger;
-    console.log(token);
     const response = await axios.post(
       `${apiUrl}/user/follow/${following}`,
       { follower: follower },
@@ -37,8 +35,6 @@ export const followUserApi = async (follower, following, token) => {
 
 export const unfollowUserApi = async (follower, following, token) => {
   try {
-    debugger;
-    console.log(token);
     const response = await axios.post(
       `${apiUrl}/user/unfollow/${following}`,
       { follower: follower },

@@ -1,69 +1,13 @@
-// import React, { useState } from "react";
-// import { connect } from "react-redux";
-
-// import { fetchSearchBooks } from "../../store/mutations";
-// import MultiSelectDropdown from "./MultiSelectDropdown";
-// import Input from "./Input";
-// import "./SearchBar.css";
-
-// const SearchBar = ({ fetchSearchBooks }) => {
-//   const [searchText, setSearchText] = useState("");
-
-//   const handleSearchChange = (e) => {
-//     let params = {};
-//     if (Array.isArray(e)) {
-//       params.genres = e;
-//       params.searchText = searchText;
-//     } else {
-//       params.genres = selectedOptions;
-//       params.searchText = e.target.value;
-//       setSearchText(e.target.value);
-//     }
-//     fetchSearchBooks(params);
-//   };
-
-//   const { selectedOptions, MultiSelectComponent } = MultiSelectDropdown({
-//     onChangeHandler: handleSearchChange,
-//   });
-
-//   return (
-//     <div className="header-section">
-//       {MultiSelectComponent}
-//       <div className="searchbar-container">
-//         <div className="searchbar-input">
-//           <Input
-//             type="text"
-//             placeholder="Въведете заглавие/автор на книга"
-//             value={searchText}
-//             onChange={handleSearchChange}
-//           ></Input>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// function mapStateToProps(state) {
-//   return {
-//     books: state.books,
-//   };
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     fetchSearchBooks(params) {
-//       dispatch(fetchSearchBooks(params));
-//     },
-//   };
-// };
-
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
+
 import { fetchSearchBooks } from "../../store/mutations/bookMutations";
 import MultiSelectDropdown from "./MultiSelectDropdown";
 import "./SearchBar.css";
 
 const SearchBar = ({ fetchSearchBooks }) => {
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
 
   const handleSearchChange = (e) => {
@@ -84,22 +28,35 @@ const SearchBar = ({ fetchSearchBooks }) => {
       genres: selectedOptions,
     };
     fetchSearchBooks(params);
+
+    if (!window.location.href.endsWith("books")) {
+      navigate("/books");
+    }
   };
 
   return (
-    <div class="s003">
+    <div className="s003">
       <form>
-        <div class="inner-form">
-          <div class="input-field first-wrap">
-            <div class="input-select">{MultiSelectComponent}</div>
+        <div className="inner-form">
+          <div className="input-field first-wrap">
+            <div className="input-select">{MultiSelectComponent}</div>
           </div>
-          <div class="input-field second-wrap">
-            <input id="search" type="text" placeholder="Enter Keywords?" />
+          <div className="input-field second-wrap">
+            <input
+              id="search"
+              type="text"
+              placeholder="Enter Keywords?"
+              onChange={handleSearchChange}
+            />
           </div>
-          <div class="input-field third-wrap">
-            <button class="btn-search" type="button">
+          <div className="input-field third-wrap">
+            <button
+              className="btn-search"
+              type="button"
+              onClick={handleSearchSubmit}
+            >
               <svg
-                class="svg-inline--fa fa-search fa-w-16"
+                className="svg-inline--fa fa-search fa-w-16"
                 aria-hidden="true"
                 data-prefix="fas"
                 data-icon="search"

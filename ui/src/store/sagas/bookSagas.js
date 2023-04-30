@@ -64,7 +64,6 @@ export function* fetchBooksSaga(action) {
 export function* fetchSearchBooksSaga(action) {
   const { params } = action;
   let searchBooks = yield select((state) => state.books);
-
   if (params.searchText.length) {
     searchBooks = searchBooks.filter(
       (book) =>
@@ -74,8 +73,8 @@ export function* fetchSearchBooksSaga(action) {
   }
 
   if (params.genres.length) {
-    searchBooks = searchBooks.filter((book) =>
-      intersect(book.genres, params.genres)
+    searchBooks = searchBooks.filter(
+      (book) => intersect(book.genres, params.genres).length
     );
   }
 

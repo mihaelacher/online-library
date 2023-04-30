@@ -11,18 +11,18 @@ export const BookList = ({ searchBooks, loading }) => {
     return <Loading />;
   }
 
-  if (searchBooks.length === 0) {
-    return <p>No books found.</p>;
-  }
-
   return (
     <>
       <ConnectedSearchBar />
-      <div className="book-list-wrapper">
-        {searchBooks.map((book) => (
-          <BookItem book={book} key={book._id} />
-        ))}
-      </div>
+      {searchBooks.length === 0 ? (
+        <h1 style={{ textAlign: "center" }}>Няма резултати от търсенето!</h1>
+      ) : (
+        <div className="book-list-wrapper">
+          {searchBooks.map((book) => (
+            <BookItem book={book} key={book._id} />
+          ))}
+        </div>
+      )}
     </>
   );
 };

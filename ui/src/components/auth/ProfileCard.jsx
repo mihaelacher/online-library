@@ -43,7 +43,7 @@ const ProfileCard = ({
   };
 
   const isFollowing = () => {
-    return profileUser?.followers?.includes(user?.nickname);
+    return profileUser.followers.includes(user?.nickname);
   };
 
   return (
@@ -70,23 +70,23 @@ const ProfileCard = ({
                     {profileUser?.username}
                   </p>
                   <div
-                    class="d-flex justify-content-start rounded-3 p-2 mb-2"
+                    className="d-flex justify-content-start rounded-3 p-2 mb-2"
                     style={{ backgroundColor: "#efefef" }}
                   >
                     <div>
-                      <p class="small text-muted mb-1">Последвал</p>
-                      <p class="mb-0">{profileUser?.following.length}</p>
+                      <p className="small text-muted mb-1">Последвал</p>
+                      <p className="mb-0">{profileUser?.following.length}</p>
                     </div>
-                    <div class="px-3">
-                      <p class="small text-muted mb-1">Последователи</p>
-                      <p class="mb-0">{profileUser?.followers.length}</p>
+                    <div className="px-3">
+                      <p className="small text-muted mb-1">Последователи</p>
+                      <p className="mb-0">{profileUser?.followers.length}</p>
                     </div>
                   </div>
-                  <div class="d-flex pt-1">
+                  <div className="d-flex pt-1">
                     {!isMyProfile() && (
                       <button
                         type="button"
-                        class="btn btn-primary flex-grow-1"
+                        className="btn btn-primary flex-grow-1"
                         onClick={isFollowing() ? unFollowUser : followUser}
                       >
                         {isFollowing() ? "Unfollow" : "Follow"}
