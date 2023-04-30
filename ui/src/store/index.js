@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 
-import * as sagas from "./sagas";
+import { watchBooksSagas } from "./sagas/bookSagas";
+import { watchUsersSagas } from "./sagas/userSagas";
 import rootReducer from "./reducers/rootReducer";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -19,6 +20,5 @@ export const store = configureStore({
       .concat(sagaMiddleware),
 });
 
-for (let saga in sagas) {
-  sagaMiddleware.run(sagas[saga]);
-}
+sagaMiddleware.run(watchBooksSagas);
+sagaMiddleware.run(watchUsersSagas);

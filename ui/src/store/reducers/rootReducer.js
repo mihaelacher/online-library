@@ -1,6 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
 import { books } from "./bookReducer";
+import { users } from "./userReducer";
 import { searchBooks } from "./searchBookReducer";
 import { providedBooks } from "./providedBooksReducer";
 import { rentedBooks } from "./rentedBooksReducer";
@@ -9,6 +10,7 @@ import { errors } from "./errorsReducer";
 
 const rootReducer = combineReducers({
   books,
+  users,
   searchBooks,
   providedBooks,
   rentedBooks,

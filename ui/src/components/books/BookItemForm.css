@@ -4,14 +4,7 @@
   margin-right: auto;
 }
 
-label {
-  color: rgb(37, 36, 36);
-}
-
-button {
-  margin-top: 25px;
-}
-
-.form-group {
-  margin-top: 10px;
+.btn-right {
+  margin: 15px;
+  float: right;
 }

@@ -1,30 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactModal from "react-modal";
+import { useCart } from "react-use-cart";
 
-function BookItemModal({ book, isOpen, setIsOpen, addItem }) {
+import "./BookItemModal.css";
+import ProfileCardModal from "../auth/ProfileCardModal";
+
+function BookItemModal({ book, isOpen, setIsOpen }) {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { addItem } = useCart();
   return (
-    <ReactModal
-      isOpen={isOpen}
-      contentLabel="Book Modal"
-      onRequestClose={() => setIsOpen(false)}
-      ariaHideApp={false}
-    >
-      <div className="container mt-5">
-        <div className="row">
-          <div className="col-sm-3">
-            <img className="img" src={book.cover_url} alt="book" />
+    <>
+      <ReactModal
+        isOpen={isOpen}
+        contentLabel="Book Modal"
+        onRequestClose={() => setIsOpen(false)}
+        ariaHideApp={false}
+      >
+        <div className="book-modal__content">
+          <div className="book-modal__image">
+            <img src={book.cover_url} alt="book" />
           </div>
-          <div className="col-sm-8">
-            <h3>Заглавие: {book.title}</h3>
-            <h5>Автор: {book.author}</h5>
-            <p>{book.description}</p>
-          </div>
-          <div className="buyBt">
-            <button onClick={() => addItem(book)}>Купи</button>
+          <div className="book-modal__info">
+            <h3 className="book-modal__title">
+              {book.title} - {book.author}
+            </h3>
+            <p className="book-modal__description">{book.description}</p>
+
+            <div className="book-modal__buttons">
+              <button
+                className="book-modal__button"
+                onClick={() => addItem(book)}
+              >
+                Купи
+              </button>
+              <button
+                className="book-modal__button"
+                onClick={() => setIsOpen(false)}
+              >
+                Затвори
+              </button>
+              <button
+                className="book-modal__button"
+                onClick={() => setIsProfileOpen(true)}
+              >
+                профил
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </ReactModal>
+      </ReactModal>
+      <ProfileCardModal
+        isOpen={isProfileOpen}
+        setIsOpen={setIsProfileOpen}
+        username={book?.provider}
+      />
+    </>
   );
 }
 

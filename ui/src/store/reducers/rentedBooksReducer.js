@@ -1,4 +1,4 @@
-import * as mutations from "../mutations";
+import * as mutations from "../mutations/bookMutations";
 import { initialState } from "../initialState";
 
 export const rentedBooks = (rentedBooks = initialState.rentedBooks, action) => {

@@ -1,4 +1,5 @@
 import mime from "mime-types";
+import { ObjectId } from "mongodb";
 
 import config from "../config/config.js";
 
@@ -23,7 +24,7 @@ export function updateBookFiles(
   );
 }
 
-export function validateBook(book) {
+export function validateBook(book, files) {
   let errors = [];
 
   if (!book.title) {
@@ -42,13 +43,16 @@ export function validateBook(book) {
     errors.push("Цената на книга е задължително!");
   }
 
-  if (!book.cover_image) {
+  if (
+    (!files?.cover_image.length && !files?.cover_image[0]) ||
+    !book.cover_image_url
+  ) {
     errors.push("Корицата на книга е задължително!");
   }
 
-  if (!book.book_pdf) {
+  if ((!files?.book_pdf.length && files?.book_pdf[0]) || !book.book_pdf_url) {
     errors.push("Файлът на книга е задължително!");
   }
 
-  return errors;
+  return errors.join("\r\n");
 }

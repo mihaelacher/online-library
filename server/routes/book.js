@@ -34,7 +34,8 @@ bookRouter.get("/:bookId", async (req, res) => {
 bookRouter.post("/", cpUpload, async (req, res) => {
   try {
     const book = req.body;
-    const validationErrors = validateBook(book);
+    const files = req.files;
+    const validationErrors = validateBook(book, files);
     if (validationErrors.length) {
       return res.status(400).send(validationErrors);
     }
@@ -42,47 +43,41 @@ bookRouter.post("/", cpUpload, async (req, res) => {
     const dbClient = new MongoClient(db.mongoDB.connectionString);
     const database = dbClient.db(db.mongoDB.dbName);
     const books = database.collection(db.mongoDB.booksCollection);
-    const files = req.files;
     const coverImage = files?.cover_image[0];
     const bookPDF = files?.book_pdf[0];
     let insertedId;
 
-    await books
-      .insertOne(book)
-      .then((result) => {
-        insertedId = result.insertedId.toString();
-        storeFile(
-          coverImage,
-          insertedId,
-          db.s3Buckets.bookImages,
-          "image/png" // TODO: generate dynamic content type, must not be only png
-        );
-        storeFile(
-          bookPDF,
-          insertedId,
-          db.s3Buckets.bookFiles,
-          "application/pdf"
-        );
-      })
-      .catch((err) => {
-        res.status(500).send("Internal Server Error");
-      });
+    try {
+      const result = await books.insertOne(book);
+      insertedId = result.insertedId.toString();
 
-    updateBookFiles(books, insertedId, coverImage.mimetype, bookPDF.mimetype);
+      storeFile(
+        coverImage,
+        insertedId,
+        db.s3Buckets.bookImages,
+        "image/png" // TODO: generate dynamic content type, must not be only png
+      );
+      storeFile(bookPDF, insertedId, db.s3Buckets.bookFiles, "application/pdf");
 
-    res
-      .status(200)
-      .send(await books.findOne({ _id: new ObjectId(insertedId) }));
-  } catch (err) {
-    res.status(500).send("Internal server error");
+      updateBookFiles(books, insertedId, coverImage.mimetype, bookPDF.mimetype);
+
+      res
+        .status(200)
+        .send(await books.findOne({ _id: new ObjectId(insertedId) }));
+    } catch (error) {
+      return res.status(500).send("DB connection error." + error); //debug
+    }
+  } catch (error) {
+    return res.status(500).send("Server error." + error); //debug
   }
 });
 
 bookRouter.post("/:bookId", cpUpload, async (req, res) => {
   try {
     let book = req.body;
+    const files = req.files;
 
-    const validationErrors = validateBook(book);
+    const validationErrors = validateBook(book, files);
     if (validationErrors.length) {
       return res.status(400).send({ errors: validationErrors.join(",") });
     }
@@ -91,7 +86,6 @@ bookRouter.post("/:bookId", cpUpload, async (req, res) => {
     const dbClient = new MongoClient(db.mongoDB.connectionString);
     const database = dbClient.db(db.mongoDB.dbName);
     const books = database.collection(db.mongoDB.booksCollection);
-    const files = req.files;
     const coverImage = files.cover_image[0];
     const bookPDF = files.book_pdf[0];
 
@@ -117,16 +111,46 @@ bookRouter.post("/:bookId", cpUpload, async (req, res) => {
         }
       )
       .catch((err) => {
-        res.status(500).send("Internal Server Error");
+        return res.status(500).send("Internal Server Error");
       });
 
     // TODO: generate dynamic content type, must not be only png
     storeFile(coverImage, bookId, db.s3Buckets.bookImages, "image/png");
     storeFile(bookPDF, bookId, db.s3Buckets.bookFiles, "application/pdf");
 
-    res.status(200).send(await books.findOne({ _id: new ObjectId(bookId) }));
+    return res
+      .status(200)
+      .send(await books.findOne({ _id: new ObjectId(bookId) }));
   } catch (err) {
-    res.status(500).send("Internal server error");
+    return res.status(500).send("Internal server error");
+  }
+});
+
+bookRouter.delete("/:bookId", async (req, res) => {
+  const bookId = req.params.bookId;
+  const provider = req.body.provider;
+  const dbClient = new MongoClient(db.mongoDB.connectionString);
+  const database = dbClient.db(db.mongoDB.dbName);
+  const books = database.collection(db.mongoDB.booksCollection);
+
+  try {
+    const book = await books.findOne({ _id: new ObjectId(bookId) });
+
+    if (provider != book.provider) {
+      return res.status(403).send("Forbidden!");
+    }
+    const result = await books.updateOne(
+      { _id: new ObjectId(bookId) },
+      {
+        $set: {
+          deletedAt: Date.now(),
+        },
+      }
+    );
+    return res.status(200).send("Ok!");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("DB error");
   }
 });
 

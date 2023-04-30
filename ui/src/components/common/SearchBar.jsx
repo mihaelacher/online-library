@@ -59,10 +59,8 @@
 
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { fetchSearchBooks } from "../../store/mutations";
+import { fetchSearchBooks } from "../../store/mutations/bookMutations";
 import MultiSelectDropdown from "./MultiSelectDropdown";
-import Input from "./Input";
-import Button from "./Button";
 import "./SearchBar.css";
 
 const SearchBar = ({ fetchSearchBooks }) => {
@@ -119,19 +117,6 @@ const SearchBar = ({ fetchSearchBooks }) => {
         </div>
       </form>
     </div>
-    // <div className="header-section">
-    //   {MultiSelectComponent}
-    //   <div className="searchbar-container">
-    //     <div className="searchbar-input">
-    //       <Input
-    //         type="text"
-    //         placeholder="Въведете заглавие/автор на книга"
-    //         value={searchText}
-    //         onChange={handleSearchChange}
-    //       ></Input>
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 

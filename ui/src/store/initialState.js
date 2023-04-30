@@ -3,6 +3,7 @@ export const initialState = {
   searchBooks: [],
   providedBooks: [],
   rentedBooks: [],
+  users: [],
   apiCallsInProgress: 0,
   errors: {},
 };

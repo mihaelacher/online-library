@@ -1,17 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { Form, Input, Button, ConfigProvider } from "antd";
+import "antd/dist/reset.css";
 
-import Input from "../common/Input";
-import TextArea from "../common/TextArea";
-import Button from "../common/Button";
 import PDFViewer from "../common/PDFViewer";
 import useBookForm from "../../hooks/useBookForm";
 import MultiSelectDropdown from "../common/MultiSelectDropdown";
 import Loading from "../common/Loading";
 import { withRouter } from "../common/withRouter";
-import { requestBookCreation, requestBookUpdate } from "../../store/mutations";
+import {
+  requestBookCreation,
+  requestBookUpdate,
+  requestBookDelete,
+} from "../../store/mutations/bookMutations";
 import "./BookItemForm.css";
 
 const BookItemForm = ({
@@ -21,12 +24,19 @@ const BookItemForm = ({
   serverError,
   requestBookCreation,
   requestBookUpdate,
+  requestBookDelete,
 }) => {
+  const formRef = useRef(null);
   const navigate = useNavigate();
-  const { book, setBook, onChangeInput, errors, onSubmitForm } = useBookForm({
-    requestBookCreation,
-    requestBookUpdate,
-  });
+  const { book, setBook, onChangeInput, onDeleteRequest, onSubmitForm } =
+    useBookForm({
+      loading,
+      serverError,
+      formRef,
+      requestBookCreation,
+      requestBookUpdate,
+      requestBookDelete,
+    });
   const { MultiSelectComponent } = MultiSelectDropdown({
     onChangeHandler: onChangeInput,
     defaultValue: formBook?.genres,
@@ -35,7 +45,7 @@ const BookItemForm = ({
   useEffect(() => {
     if (formBook) {
       setBook(formBook);
-    } else if (id) {
+    } else if (id && !loading) {
       navigate("/404");
     }
   }, [id, formBook]);
@@ -45,90 +55,149 @@ const BookItemForm = ({
   }
 
   return (
-    <form className="book-form col-lg-6 col-sm-6">
-      <h2>
-        Моля, Въведете необходимата информация за книгата, която ще предлагате
-      </h2>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#ec8f6a",
+        },
+      }}
+    >
+      <Form
+        ref={formRef}
+        initialValues={formBook}
+        className="book-form col-lg-6 col-sm-6"
+        onFinish={onSubmitForm}
+        validateTrigger="onSubmit"
+        layout="vertical"
+      >
+        <h2>
+          Моля, Въведете необходимата информация за книгата, която ще предлагате
+        </h2>
 
-      {serverError && <div class="bar error">{serverError.join("\r\n")}</div>}
+        {serverError && <div className="bar error">{serverError}</div>}
 
-      <Input
-        name="title"
-        value={book?.title}
-        labelText="Заглавие"
-        type="text"
-        placeholder="Въведете заглавие на книгата"
-        onChange={onChangeInput}
-        error={errors?.title}
-      ></Input>
+        <Form.Item
+          name="title"
+          label="Заглавие"
+          rules={[
+            {
+              required: true,
+              message: "Моля, въведете заглавие на книгата",
+            },
+          ]}
+        >
+          <Input
+            placeholder="Въведете заглавие на книгата"
+            value={book?.title}
+            onChange={onChangeInput}
+          />
+        </Form.Item>
 
-      <Input
-        name="author"
-        value={book?.author}
-        labelText="Име и Фамилия на автора"
-        type="text"
-        placeholder="Въведете Име и Фамилия на автрора"
-        onChange={onChangeInput}
-        error={errors?.author}
-      ></Input>
+        <Form.Item
+          name="author"
+          label="Име и Фамилия на автора"
+          rules={[
+            {
+              required: true,
+              message: "Моля, въведете Име и Фамилия на автрора",
+            },
+          ]}
+        >
+          <Input
+            placeholder="Въведете Име и Фамилия на автрора"
+            value={book?.author}
+            onChange={onChangeInput}
+          />
+        </Form.Item>
 
-      <Input
-        name="price"
-        value={book?.price}
-        labelText="Цена"
-        type="number"
-        placeholder="Въведете цената, на която искате да предлагате книгата"
-        onChange={onChangeInput}
-        error={errors?.price}
-      ></Input>
+        <Form.Item
+          name="price"
+          label="Цена"
+          rules={[
+            {
+              required: true,
+              message:
+                "Моля, въведете цената, на която искате да предлагате книгата",
+            },
+          ]}
+        >
+          <Input
+            placeholder="Въведете цената, на която искате да предлагате книгата"
+            value={book?.price}
+            type="number"
+            onChange={onChangeInput}
+          />
+        </Form.Item>
 
-      <TextArea
-        name="description"
-        value={book?.description}
-        labelText="Пълно описание"
-        rows="10"
-        placeholder="Въведете пълно описание на книгата"
-        onChange={onChangeInput}
-        error={errors?.description}
-      ></TextArea>
+        <Form.Item
+          name="description"
+          label="Пълно описание"
+          rules={[
+            {
+              required: true,
+              message: "Моля, въведете пълно описание на книгата",
+            },
+          ]}
+        >
+          <Input.TextArea
+            placeholder="Въведете пълно описание на книгата"
+            value={book?.description}
+            rows="10"
+            onChange={onChangeInput}
+          />
+        </Form.Item>
 
-      <div style={{ marginTop: "20px" }}>{MultiSelectComponent}</div>
+        <div style={{ marginTop: "20px" }}>{MultiSelectComponent}</div>
 
-      {book?.cover_url && (
-        <div className="col-sm-7 form-group">
-          <img className="img" src={book?.cover_url} alt="book" />
-        </div>
-      )}
+        {book?.cover_image_url && (
+          <div className="col-sm-7 form-group">
+            <img className="img" src={book?.cover_image_url} alt="book" />
+          </div>
+        )}
 
-      <Input
-        name="cover_image"
-        labelText="Корица"
-        type="file"
-        onChange={onChangeInput}
-        error={errors?.cover_image}
-      ></Input>
+        <Form.Item
+          name="cover_image"
+          label="Корица"
+          rules={[
+            {
+              required: true,
+              message: "Моля, изберете корица за книгата",
+            },
+          ]}
+        >
+          <Input type="file" onChange={onChangeInput} />
+        </Form.Item>
 
-      <Input
-        name="book_pdf"
-        labelText="Файл"
-        type="file"
-        onChange={onChangeInput}
-        error={errors?.book_pdf}
-      ></Input>
+        <Form.Item
+          name="book_pdf"
+          label="Файл"
+          rules={[
+            {
+              required: true,
+              message: "Моля, качете файл за книгата",
+            },
+          ]}
+        >
+          <Input type="file" onChange={onChangeInput} />
+        </Form.Item>
 
-      {book?.book_pdf_url && (
-        <PDFViewer book_pdf_url={book?.book_pdf_url}></PDFViewer>
-      )}
+        {book?.book_pdf_url && (
+          <PDFViewer book_pdf_url={book?.book_pdf_url}></PDFViewer>
+        )}
 
-      {book?._id && (
-        <Button isDisabled={loading} name="Заяви изтриване"></Button>
-      )}
-      <Button
-        isDisabled={loading}
-        name={book?._id ? "Запази" : "Добави"}
-        onClick={onSubmitForm}
-      ></Button>
-    </form>
+        {book?._id && (
+          <Button
+            onClick={onDeleteRequest}
+            className="btn-quarternary btn-right"
+          >
+            Заяви изтриване
+          </Button>
+        )}
+        <Button className="btn-right" type="primary" onClick={onSubmitForm}>
+          {!book?._id ? "Запази" : "Редактирай"}
+        </Button>
+      </Form>
+    </ConfigProvider>
   );
 };
 
@@ -142,6 +211,7 @@ const mapStateToProps = (state, { params: { id } }) => ({
 const mapDispatchToProps = {
   requestBookCreation,
   requestBookUpdate,
+  requestBookDelete,
 };
 
 const ConnectedBookItemForm = connect(

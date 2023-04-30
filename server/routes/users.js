@@ -3,21 +3,15 @@ import { MongoClient } from "mongodb";
 
 import db from "../config/db.js";
 
-const booksRouter = express.Router();
+const usersRouter = express.Router();
 
-booksRouter.get("/", async (req, res) => {
+usersRouter.get("/", async (req, res) => {
   try {
     const dbClient = new MongoClient(db.mongoDB.connectionString);
     const database = dbClient.db(db.mongoDB.dbName);
-    const books = database.collection(db.mongoDB.booksCollection);
+    const users = database.collection(db.mongoDB.usersCollection);
 
-    const projection = {
-      book_pdf: 0,
-      cover_image: 0,
-    };
-
-    const cursor = books.find({}).project(projection);
-
+    const cursor = users.find({});
     const values = await cursor.toArray();
     res.status(200).send(values);
   } catch (error) {
@@ -25,4 +19,4 @@ booksRouter.get("/", async (req, res) => {
   }
 });
 
-export { booksRouter };
+export { usersRouter };

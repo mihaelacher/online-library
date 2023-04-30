@@ -38,13 +38,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: { fieldSize: 10 * 1024 * 1024 },
   fileFilter: fileFilter,
   multipart: true,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB max file size
-    files: 2, // 2 files max
-  },
 });
 
 const cpUpload = upload.fields([
