@@ -5,6 +5,7 @@ import { booksRouter } from "./routes/books.js";
 import { bookRouter } from "./routes/book.js";
 import { usersRouter } from "./routes/users.js";
 import { paymentRouter } from "./routes/payment.js";
+import { userRouter } from "./routes/user.js";
 
 var app = express();
 
@@ -20,6 +21,7 @@ const PORT = process.env.PORT || 3001;
 app.use("/books", booksRouter);
 app.use("/book", bookRouter);
 app.use("/users", usersRouter);
+app.use("/user", userRouter);
 app.use("/payment", paymentRouter);
 
 app.listen(PORT, () => {

@@ -41,7 +41,6 @@ export function* bookUpdateSaga(action) {
 
 export function* bookDeleteSaga(action) {
   const { bookId, token, provider } = action;
-  debugger;
   yield put(beginApiCall());
   try {
     yield call(api.deleteBookApi, bookId, token, provider);

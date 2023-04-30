@@ -3,18 +3,48 @@ import { connect } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import Loading from "../common/Loading";
+import {
+  requestFollowUser,
+  requestUnfollowUser,
+} from "../../store/mutations/userMutations";
 
 const ProfileCard = ({
   username,
   sizeClass = "col col-md-9 col-lg-7 col-xl-5",
   profileUser,
   loading,
+  requestFollowUser,
+  requestUnfollowUser,
 }) => {
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
 
   if (loading) {
     return <Loading />;
   }
+
+  const followUser = async (e) => {
+    e.preventDefault();
+
+    const token = await getAccessTokenSilently();
+
+    requestFollowUser(user.nickname, username, token);
+  };
+
+  const unFollowUser = async (e) => {
+    e.preventDefault();
+
+    const token = await getAccessTokenSilently();
+
+    requestUnfollowUser(user.nickname, username, token);
+  };
+
+  const isMyProfile = () => {
+    return user?.nickname === profileUser?.username;
+  };
+
+  const isFollowing = () => {
+    return profileUser?.followers?.includes(user?.nickname);
+  };
 
   return (
     <div className="container py-5 h-100">
@@ -53,9 +83,13 @@ const ProfileCard = ({
                     </div>
                   </div>
                   <div class="d-flex pt-1">
-                    {user?.nickname !== profileUser?.username && (
-                      <button type="button" class="btn btn-primary flex-grow-1">
-                        Follow
+                    {!isMyProfile() && (
+                      <button
+                        type="button"
+                        class="btn btn-primary flex-grow-1"
+                        onClick={isFollowing() ? unFollowUser : followUser}
+                      >
+                        {isFollowing() ? "Unfollow" : "Follow"}
                       </button>
                     )}
                   </div>
@@ -78,4 +112,12 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export const ConnectedProfileCard = connect(mapStateToProps)(ProfileCard);
+const mapDispatchToProps = {
+  requestFollowUser,
+  requestUnfollowUser,
+};
+
+export const ConnectedProfileCard = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileCard);
