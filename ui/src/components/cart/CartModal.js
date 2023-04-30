@@ -1,42 +1,32 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactModal from "react-modal";
 import { useCart } from "react-use-cart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import getStripe from "../../libs/getStripe";
 import "./CartModal.css";
 
 function CartModal({ isOpen, setIsOpen }) {
+  const navigate = useNavigate();
   const { isEmpty, items, removeItem } = useCart();
   const [total, _setTotal] = useState(0);
 
-  async function handleCheckout() {
-    const stripe = await getStripe();
-    const { error } = await stripe.payment({
-      lineItems: [
-        {
-          price: total.toString(),
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      successUrl: `${process.env.HOST_URL}/home`,
-      cancelUrl: `${process.env.HOST_URL}/home`,
-      customerEmail: "customer@email.com",
-    });
-    console.warn(error.message);
+  async function handleCheckout(e) {
+    e.preventDefault();
+    navigate("/payment");
   }
 
   useEffect(() => {
     setTotal();
-  }, [isOpen, items]);
+  }, [items]);
 
   function setTotal() {
     if (!isEmpty) {
-      const value = items.reduce(
+      const cartItems = Array.isArray(items) ? items : [items];
+      const value = cartItems.reduce(
         (total, item) =>
-          parseInt(typeof total == "object" ? total.price : total) +
-          parseInt(item.price)
+          parseFloat(typeof total == "object" ? total.price : total) +
+          parseFloat(item.price)
       );
       _setTotal(value);
     }
@@ -60,35 +50,26 @@ function CartModal({ isOpen, setIsOpen }) {
                 <tr>
                   <th
                     className="text-center py-3 px-4"
-                    // style="min-width: 400px;"
+                    style={{ minWidth: "400px" }}
                   >
                     Книга
                   </th>
                   <th
                     className="text-right py-3 px-4"
-                    // style="width: 100px;"
+                    style={{ width: "100px" }}
                   >
                     Цена
                   </th>
                   <th
                     className="text-center align-middle py-3 px-0"
-                    // style="width: 40px;"
-                  >
-                    <a
-                      href="#"
-                      className="shop-tooltip float-none text-light"
-                      title=""
-                      data-original-title="Clear cart"
-                    >
-                      <i className="ino ion-md-trash"></i>
-                    </a>
-                  </th>
+                    tyle={{ width: "40px" }}
+                  ></th>
                 </tr>
               </thead>
               <tbody>
                 {items?.map(function (item) {
                   return (
-                    <tr>
+                    <tr key={item.id}>
                       <td className="p-4">
                         <div className="media align-items-center">
                           <img
@@ -98,25 +79,22 @@ function CartModal({ isOpen, setIsOpen }) {
                           />
                           <div className="media-body">
                             <small>
-                              <span className="text-muted">Заглавие: </span>{" "}
+                              <span className="text-muted">Заглавие: </span>
                               {item.title + "  "}
                             </small>
                             <small>
-                              <span className="text-muted">Автор: </span>{" "}
+                              <span className="text-muted">Автор: </span>
                               {item.author}
                             </small>
                           </div>
                         </div>
                       </td>
                       <td className="text-right font-weight-semibold align-middle p-4">
-                        {item.price} лв.
+                        {item.price}лв.
                       </td>
                       <td className="text-center align-middle px-0">
                         <button
-                          href="#"
                           className="shop-tooltip close float-none text-danger"
-                          title=""
-                          data-original-title="Remove"
                           onClick={() => removeItem(item.id)}
                         >
                           <FontAwesomeIcon icon="fa-solid fa-xmark" />
@@ -161,7 +139,7 @@ function CartModal({ isOpen, setIsOpen }) {
             <button
               type="button"
               className="btn btn-lg btn-primary mt-2"
-              onClick={() => handleCheckout()}
+              onClick={handleCheckout}
             >
               Продължи към плащане
             </button>

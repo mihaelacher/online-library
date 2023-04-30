@@ -45,7 +45,7 @@ const SearchBar = ({ fetchSearchBooks }) => {
             <input
               id="search"
               type="text"
-              placeholder="Enter Keywords?"
+              placeholder="Търси..."
               onChange={handleSearchChange}
             />
           </div>

@@ -14,6 +14,7 @@ const CardSection = () => {
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
+    debugger;
     event.preventDefault();
 
     if (!stripe || !elements) {
@@ -26,7 +27,7 @@ const CardSection = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${process.env.HOST_URL}/order/status`,
+        return_url: `${process.env.REACT_APP_HOST_URL}payment/status`,
       },
     });
 
