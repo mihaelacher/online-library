@@ -1,4 +1,5 @@
 export const initialState = {
+  loggedUser: {},
   books: [],
   searchBooks: [],
   providedBooks: [],

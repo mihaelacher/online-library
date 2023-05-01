@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { all, call, put, takeEvery, select } from "redux-saga/effects";
 
 import * as userMutations from "../mutations/userMutations";
 import { beginApiCall } from "../mutations/apiMutations";
@@ -9,17 +9,26 @@ export function* watchUsersSagas() {
     takeEvery(userMutations.FETCH_USERS, fetchUsersSaga),
     takeEvery(userMutations.REQUEST_FOLLOW_USER, followUserSaga),
     takeEvery(userMutations.REQUEST_UNFOLLOW_USER, unfollowUserSaga),
+    takeEvery(userMutations.FETCH_LOGGED_USER, fetchLoggedUserSaga),
   ]);
 }
 
 export function* fetchUsersSaga(action) {
-  const { token } = action;
+  const { loggedUser, token } = action;
   yield put(beginApiCall());
   try {
     const data = yield call(api.fetchUsersApi, token);
     yield put(userMutations.fetchUsersSuccess(data));
+    yield call(fetchLoggedUserSaga, data, loggedUser);
   } catch (error) {
     yield put(userMutations.fetchUsersFailed(error.message));
+  }
+}
+
+export function* fetchLoggedUserSaga(users, loggedUser) {
+  const user = users.filter((item) => item.username === loggedUser.nickname);
+  if (user.length) {
+    yield put(userMutations.fetchLoggedUserSuccess(user.shift()));
   }
 }
 

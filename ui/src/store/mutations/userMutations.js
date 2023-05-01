@@ -7,10 +7,13 @@ export const FOLLOW_USER_FAILED = "FOLLOW_USER_FAILED";
 export const REQUEST_UNFOLLOW_USER = "REQUEST_UNFOLLOW_USER";
 export const UNFOLLOW_USER_SUCCESS = "UNFOLLOW_USER_SUCCESS";
 export const UNFOLLOW_USER_FAILED = "UNFOLLOW_USER_FAILED";
+export const FETCH_LOGGED_USER = "FETCH_LOGGED_USER";
+export const FETCH_LOGGED_USER_SUCCESS = "FETCH_LOGGED_USER_SUCCESS";
 
-export const fetchUsers = (token) => ({
+export const fetchUsers = (token, loggedUser) => ({
   type: FETCH_USERS,
   token,
+  loggedUser,
 });
 
 export const fetchUsersSuccess = (users) => ({
@@ -57,4 +60,15 @@ export const unfollowUserSuccess = (follower, following) => ({
 export const unfollowUserFailed = (error) => ({
   type: UNFOLLOW_USER_FAILED,
   error,
+});
+
+export const fetchLoggedUser = (users, loggedUser) => ({
+  type: FETCH_LOGGED_USER,
+  users,
+  loggedUser,
+});
+
+export const fetchLoggedUserSuccess = (user) => ({
+  type: FETCH_LOGGED_USER_SUCCESS,
+  user,
 });

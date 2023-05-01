@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import AuthProvider from "./providers/AuthProvider";
 import HomeRoutes from "./routes/HomeRoutes";
+import ProfileRoutes from "./routes/ProfileRoutes";
 import OrderRoutes from "./routes/OrderRoutes";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import NotFound from "./components/error-page/NotFound";
@@ -29,6 +30,7 @@ export default function App() {
               <AuthProvider>
                 <Routes>
                   {HomeRoutes}
+                  {ProfileRoutes}
                   {OrderRoutes}
                   <Route path="/404" element={<NotFound />} />
                   <Route path="*" element={<NotFound />} />

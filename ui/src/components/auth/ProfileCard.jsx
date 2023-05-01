@@ -12,11 +12,12 @@ const ProfileCard = ({
   username,
   sizeClass = "col col-md-9 col-lg-7 col-xl-5",
   profileUser,
+  loggedUser,
   loading,
   requestFollowUser,
   requestUnfollowUser,
 }) => {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   if (loading) {
     return <Loading />;
@@ -27,7 +28,7 @@ const ProfileCard = ({
 
     const token = await getAccessTokenSilently();
 
-    requestFollowUser(user.nickname, username, token);
+    requestFollowUser(loggedUser.username, username, token);
   };
 
   const unFollowUser = async (e) => {
@@ -35,15 +36,18 @@ const ProfileCard = ({
 
     const token = await getAccessTokenSilently();
 
-    requestUnfollowUser(user.nickname, username, token);
+    requestUnfollowUser(loading.username, username, token);
   };
 
   const isMyProfile = () => {
-    return user?.nickname === profileUser?.username;
+    if (!loggedUser) {
+      return false;
+    }
+    return loggedUser.username === profileUser?.username;
   };
 
   const isFollowing = () => {
-    return profileUser.followers.includes(user?.nickname);
+    return profileUser.followers.includes(loggedUser?.nickname);
   };
 
   return (
@@ -108,6 +112,7 @@ function mapStateToProps(state, ownProps) {
     profileUser: state.users.find(
       (user) => user.username === ownProps.username
     ),
+    loggedUser: state.loggedUser,
     loading: state.apiCallsInProgress > 0,
   };
 }

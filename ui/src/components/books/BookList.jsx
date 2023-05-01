@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import BookItem from "./BookItem";
-import { ConnectedSearchBar } from "../common/SearchBar";
 import Loading from "../common/Loading";
 import "./BookList.css";
 
@@ -13,7 +12,6 @@ export const BookList = ({ searchBooks, loading }) => {
 
   return (
     <>
-      <ConnectedSearchBar />
       {searchBooks.length === 0 ? (
         <h1 style={{ textAlign: "center" }}>Няма резултати от търсенето!</h1>
       ) : (
