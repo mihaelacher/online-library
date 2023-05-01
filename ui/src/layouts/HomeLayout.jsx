@@ -13,7 +13,7 @@ function HomeLayout() {
 
   useEffect(() => {
     fetchData();
-  }, [user]);
+  }, [isAuthenticated]);
 
   async function fetchData() {
     store.dispatch(fetchBooks(user?.email));

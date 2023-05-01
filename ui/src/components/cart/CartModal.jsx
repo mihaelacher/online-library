@@ -5,6 +5,7 @@ import { useCart } from "react-use-cart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./CartModal.css";
+import { useCallback } from "react";
 
 function CartModal({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
@@ -16,11 +17,7 @@ function CartModal({ isOpen, setIsOpen }) {
     navigate("/payment");
   }
 
-  useEffect(() => {
-    setTotal();
-  }, [items]);
-
-  function setTotal() {
+  const setTotal = useCallback(() => {
     if (!isEmpty) {
       const cartItems = Array.isArray(items) ? items : [items];
       const value = cartItems.reduce(
@@ -30,7 +27,11 @@ function CartModal({ isOpen, setIsOpen }) {
       );
       _setTotal(value);
     }
-  }
+  }, [isEmpty, items]);
+
+  useEffect(() => {
+    setTotal();
+  }, [setTotal, items]);
 
   return (
     <ReactModal

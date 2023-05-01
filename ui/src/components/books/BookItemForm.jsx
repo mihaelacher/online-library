@@ -48,7 +48,7 @@ const BookItemForm = ({
     } else if (id && !loading) {
       navigate("/404");
     }
-  }, [id, formBook]);
+  }, [id, loading, navigate, setBook, formBook]);
 
   if (loading) {
     return <Loading />;
