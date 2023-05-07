@@ -1,27 +1,35 @@
 import React, { useState } from "react";
 import { useCart } from "react-use-cart";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import BookItemModal from "./BookItemModal";
 import "./BookItem.css";
 
 export const BookItem = ({ book }) => {
+  const { user } = useAuth0();
   const [isOpen, setIsOpen] = useState(false);
   const { addItem } = useCart();
 
   return (
     <>
-      <div className="col-lg-3" onClick={() => setIsOpen(true)}>
-        <div className="box-main">
-          <h4 className="book-title">
-            {book.title} - {book.author}
-          </h4>
-          <p className="price-text">
-            Цена <span style={{ color: "#262626" }}>{book.price} лв.</span>
-          </p>
-          <div className="book-img">
-            <img className="img" src={book.cover_url} alt="book" />
-          </div>
-        </div>
+      <div className="col-md-3" onClick={() => setIsOpen(true)}>
+        <figure className="product-style">
+          <img src={book.cover_url} alt="Books" className="product-item" />
+          {user?.nickname !== book.provider && (
+            <button
+              onClick={() => addItem(book)}
+              type="button"
+              className="add-to-cart"
+            >
+              Към количка
+            </button>
+          )}
+          <figcaption>
+            <h3>{book.title}</h3>
+            <p>{book.author}</p>
+            <div className="item-price">{book.price}лв</div>
+          </figcaption>
+        </figure>
       </div>
       <BookItemModal
         book={book}

@@ -55,149 +55,174 @@ const BookItemForm = ({
   }
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#ec8f6a",
-        },
-      }}
-    >
-      <Form
-        ref={formRef}
-        initialValues={formBook}
-        className="book-form col-lg-6 col-sm-6"
-        onFinish={onSubmitForm}
-        validateTrigger="onSubmit"
-        layout="vertical"
+    <div style={{ display: "grid", placeItems: "center" }}>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#ec8f6a",
+          },
+        }}
       >
-        <h2>
-          Моля, Въведете необходимата информация за книгата, която ще предлагате
-        </h2>
-
-        {serverError && <div className="bar error">{serverError}</div>}
-
-        <Form.Item
-          name="title"
-          label="Заглавие"
-          rules={[
-            {
-              required: true,
-              message: "Моля, въведете заглавие на книгата",
-            },
-          ]}
+        <Form
+          ref={formRef}
+          initialValues={formBook}
+          className="book-form col-lg-6 col-sm-6"
+          onFinish={onSubmitForm}
+          validateTrigger="onSubmit"
+          layout="vertical"
         >
-          <Input
-            placeholder="Въведете заглавие на книгата"
-            value={book?.title}
-            onChange={onChangeInput}
-          />
-        </Form.Item>
+          {serverError && <div className="bar error">{serverError}</div>}
 
-        <Form.Item
-          name="author"
-          label="Име и Фамилия на автора"
-          rules={[
-            {
-              required: true,
-              message: "Моля, въведете Име и Фамилия на автрора",
-            },
-          ]}
-        >
-          <Input
-            placeholder="Въведете Име и Фамилия на автрора"
-            value={book?.author}
-            onChange={onChangeInput}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="price"
-          label="Цена"
-          rules={[
-            {
-              required: true,
-              message:
-                "Моля, въведете цената, на която искате да предлагате книгата",
-            },
-          ]}
-        >
-          <Input
-            placeholder="Въведете цената, на която искате да предлагате книгата"
-            value={book?.price}
-            type="number"
-            onChange={onChangeInput}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="description"
-          label="Пълно описание"
-          rules={[
-            {
-              required: true,
-              message: "Моля, въведете пълно описание на книгата",
-            },
-          ]}
-        >
-          <Input.TextArea
-            placeholder="Въведете пълно описание на книгата"
-            value={book?.description}
-            rows="10"
-            onChange={onChangeInput}
-          />
-        </Form.Item>
-
-        <div style={{ marginTop: "20px" }}>{MultiSelectComponent}</div>
-
-        {book?.cover_image_url && (
-          <div className="col-sm-7 form-group">
-            <img className="img" src={book?.cover_image_url} alt="book" />
+          <div class="col-md-6">
+            <label htmlFor="title">Заглавие</label>
+            <Form.Item
+              name="title"
+              rules={[
+                {
+                  required: true,
+                  message: "Моля, въведете заглавие на книгата",
+                },
+              ]}
+            >
+              <Input
+                className="u-full-width"
+                placeholder="Въведете заглавие на книгата"
+                value={book?.title}
+                onChange={onChangeInput}
+              />
+            </Form.Item>
           </div>
-        )}
 
-        <Form.Item
-          name="cover_image"
-          label="Корица"
-          rules={[
-            {
-              required: true,
-              message: "Моля, изберете корица за книгата",
-            },
-          ]}
-        >
-          <Input type="file" onChange={onChangeInput} />
-        </Form.Item>
+          <div class="col-md-6">
+            <label htmlFor="author">Автор</label>
+            <Form.Item
+              className="u-full-width"
+              name="author"
+              rules={[
+                {
+                  required: true,
+                  message: "Моля, въведете Име и Фамилия на автрора",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Въведете Име и Фамилия на автрора"
+                value={book?.author}
+                onChange={onChangeInput}
+              />
+            </Form.Item>
+          </div>
 
-        <Form.Item
-          name="book_pdf"
-          label="Файл"
-          rules={[
-            {
-              required: true,
-              message: "Моля, качете файл за книгата",
-            },
-          ]}
-        >
-          <Input type="file" onChange={onChangeInput} />
-        </Form.Item>
+          <div class="col-md-12">
+            <label htmlFor="description">Пълно описание</label>
+            <Form.Item
+              name="description"
+              className="u-full-width"
+              rules={[
+                {
+                  required: true,
+                  message: "Моля, въведете пълно описание на книгата",
+                },
+              ]}
+            >
+              <Input.TextArea
+                placeholder="Въведете пълно описание на книгата"
+                value={book?.description}
+                rows="10"
+                onChange={onChangeInput}
+              />
+            </Form.Item>
+          </div>
 
-        {book?.book_pdf_url && (
-          <PDFViewer book_pdf_url={book?.book_pdf_url}></PDFViewer>
-        )}
+          <div className="col-md-12">
+            <label>Жанр</label>
+            {MultiSelectComponent}
+          </div>
 
-        {book?._id && (
-          <Button
-            onClick={onDeleteRequest}
-            className="btn-quarternary btn-right"
-          >
-            Заяви изтриване
-          </Button>
-        )}
-        <Button className="btn-right" type="primary" onClick={onSubmitForm}>
-          {!book?._id ? "Запази" : "Редактирай"}
-        </Button>
-      </Form>
-    </ConfigProvider>
+          <div className="col-md-12">
+            <label htmlFor="price">Цена</label>
+            <Form.Item
+              name="price"
+              rules={[
+                {
+                  required: true,
+                  message:
+                    "Моля, въведете цената, на която искате да предлагате книгата",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Въведете цената, на която искате да предлагате книгата"
+                value={book?.price}
+                type="number"
+                onChange={onChangeInput}
+              />
+            </Form.Item>
+          </div>
+
+          {book?.cover_image_url && (
+            <div className="col-sm-12">
+              <img className="img" src={book?.cover_image_url} alt="book" />
+            </div>
+          )}
+
+          {book?.book_pdf_url && (
+            <div className="col-md-12">
+              <PDFViewer book_pdf_url={book?.book_pdf_url}></PDFViewer>
+            </div>
+          )}
+
+          <div className="col-md-6">
+            <label htmlFor="cover_image">Корица</label>
+            <Form.Item
+              name="cover_image"
+              rules={[
+                {
+                  required: true,
+                  message: "Моля, изберете корица за книгата",
+                },
+              ]}
+            >
+              <Input
+                type="file"
+                className="custom-file-input cover-image-input"
+                onChange={onChangeInput}
+              />
+            </Form.Item>
+          </div>
+
+          <div className="col-md-6">
+            <label htmlFor="book_pdf">Файл</label>
+            <Form.Item
+              name="book_pdf"
+              rules={[
+                {
+                  required: true,
+                  message: "Моля, качете файл за книгата",
+                },
+              ]}
+            >
+              <Input
+                className="custom-file-input book-pdf-input"
+                type="file"
+                onChange={onChangeInput}
+              />
+            </Form.Item>
+          </div>
+
+          <div className="col-md-12">
+            {book?._id && (
+              <Button onClick={onDeleteRequest} className="btn-primary">
+                Заяви изтриване
+              </Button>
+            )}
+            <Button className="btn btn-large" onClick={onSubmitForm}>
+              {!book?._id ? "Запази" : "Редактирай"}
+            </Button>
+          </div>
+        </Form>
+      </ConfigProvider>
+    </div>
   );
 };
 

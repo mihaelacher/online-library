@@ -17,7 +17,7 @@ const ProfileCard = ({
   requestFollowUser,
   requestUnfollowUser,
 }) => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
   if (loading) {
     return <Loading />;
@@ -87,13 +87,13 @@ const ProfileCard = ({
                     </div>
                   </div>
                   <div className="d-flex pt-1">
-                    {!isMyProfile() && (
+                    {isAuthenticated && !isMyProfile() && (
                       <button
                         type="button"
                         className="btn btn-primary flex-grow-1"
                         onClick={isFollowing() ? unFollowUser : followUser}
                       >
-                        {isFollowing() ? "Unfollow" : "Follow"}
+                        {isFollowing() ? "Следвам" : "Последвай"}
                       </button>
                     )}
                   </div>

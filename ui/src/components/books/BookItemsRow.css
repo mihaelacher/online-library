@@ -1,12 +1,3 @@
-.headline {
-  width: 100%;
-  font-size: 40px;
-  color: #30302e;
-  text-align: center;
-  font-weight: bold;
-}
-
-.section {
-  width: 100%;
-  margin-top: 30px;
+.hidden {
+  display: none;
 }

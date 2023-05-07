@@ -1,40 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import BookItem from "./BookItem";
+import BookItemForm from "./BookItemForm";
 import Loading from "../common/Loading";
 import "./MyBookList.css";
 
 export const MyBookList = ({ loggedUser, books, loading }) => {
-  const [items, setItems] = useState([]);
-  const [isRented, _setIsRented] = useState(true);
-  const [isProvided, _setIsProvided] = useState(false);
-
-  function setIsRented() {
-    _setIsRented(true);
-    _setIsProvided(false);
-    const rentedBooks = loggedUser?.orders
-      ?.map(({ bookIds }) => bookIds)
-      .flat();
-    setItems(
-      books.filter((book) => {
-        return rentedBooks.includes(book.id);
-      })
-    );
-  }
-
-  function setIsProvided() {
-    _setIsRented(false);
-    _setIsProvided(true);
-    setItems(books?.filter((book) => book.provider === loggedUser?.username));
-  }
+  const [rentedBooks, setRentedBooks] = useState([]);
+  const [providedBooks, setProvidedBooks] = useState([]);
 
   useEffect(() => {
     if (loggedUser) {
-      setIsRented();
+      const rentedBooks = loggedUser?.orders
+        ?.map(({ bookIds }) => bookIds)
+        .flat();
+      setRentedBooks(
+        books.filter((book) => {
+          return rentedBooks.includes(book.id);
+        })
+      );
+
+      setProvidedBooks(
+        books?.filter((book) => book.provider === loggedUser?.username)
+      );
     }
   }, [loggedUser]);
 
@@ -43,51 +33,86 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="tab">
-                <ul className="nav nav-tabs">
-                  <button
-                    className={`btn mb-2 mb-md-0 btn-outline-primary btn-block ${
-                      isRented ? "selected" : ""
-                    }`}
-                    onClick={() => setIsRented()}
-                  >
-                    <span>Наети от мен</span>
-                  </button>
-                  <button
-                    className={`btn mb-2 mb-md-0 btn-outline-primary btn-block ${
-                      isProvided ? "selected" : ""
-                    }`}
-                    onClick={() => setIsProvided()}
-                  >
-                    <span>Публикувани от мен</span>
-                  </button>
-                  {isProvided && (
-                    <Link to="/book">
-                      <button className="btn mb-2 mb-md-0 btn-tertiary add-btn-block btn-round">
-                        <span>Качи книга</span>
-                        <div className="icon icon-round d-flex align-items-center justify-content-center">
-                          <i>
-                            <FontAwesomeIcon icon="fa-solid fa-cloud-arrow-up" />
-                          </i>
-                        </div>
+        <section className="padding-large">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="bootstrap-tabs">
+                  <nav>
+                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                      <button
+                        className="nav-link active"
+                        id="nav-home-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-home"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-home"
+                        aria-selected="true"
+                      >
+                        Наети от мен
                       </button>
-                    </Link>
-                  )}
-                </ul>
-                <div className="tab-content">
-                  <div className="wrapper">
-                    {items?.map(function (book, i) {
-                      return <BookItem book={book} key={i}></BookItem>;
-                    })}
+                      <button
+                        className="nav-link"
+                        id="nav-profile-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-profile"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-profile"
+                        aria-selected="false"
+                      >
+                        Публикувани от мен
+                      </button>
+                      <button
+                        className="nav-link"
+                        id="nav-contact-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-contact"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-contact"
+                        aria-selected="false"
+                      >
+                        Качи книга
+                      </button>
+                    </div>
+                  </nav>
+                  <div className="tab-content" id="nav-tabContent">
+                    <div
+                      className="tab-pane fade show active"
+                      id="nav-home"
+                      role="tabpanel"
+                      aria-labelledby="nav-home-tab"
+                    >
+                      {rentedBooks?.map(function (book, i) {
+                        return <BookItem book={book} key={i}></BookItem>;
+                      })}
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="nav-profile"
+                      role="tabpanel"
+                      aria-labelledby="nav-profile-tab"
+                    >
+                      {providedBooks?.map(function (book, i) {
+                        return <BookItem book={book} key={i}></BookItem>;
+                      })}
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="nav-contact"
+                      role="tabpanel"
+                      aria-labelledby="nav-contact-tab"
+                    >
+                      <BookItemForm />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       )}
     </>
   );

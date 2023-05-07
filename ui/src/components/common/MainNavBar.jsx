@@ -1,11 +1,25 @@
-import { Link } from "react-router-dom";
 import React from "react";
+import { Link } from "react-router-dom";
 
-function MainNavBar() {
+function MainNavBar({ windowLocation, setWindowLocation }) {
   return (
     <>
-      <Link to={"/"}>Начало</Link>
-      <Link to={"/books"}>Търси</Link>
+      <li
+        onClick={() => setWindowLocation(window.location.href)}
+        className={`menu-item ${
+          windowLocation.endsWith("3000/") ? "active" : ""
+        }`}
+      >
+        <Link to={"/"}>Начало</Link>
+      </li>
+      <li
+        onClick={() => setWindowLocation(window.location.href)}
+        className={`menu-item ${
+          windowLocation.endsWith("/books") ? "active" : ""
+        }`}
+      >
+        <Link to={"/books"}>Търси</Link>
+      </li>
     </>
   );
 }

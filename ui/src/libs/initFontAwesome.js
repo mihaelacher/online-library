@@ -6,6 +6,7 @@ import {
   faCartShopping,
   faXmark,
   faRightToBracket,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 
 function initFontAwesome() {
@@ -15,7 +16,8 @@ function initFontAwesome() {
     faCloudArrowUp,
     faCartShopping,
     faXmark,
-    faRightToBracket
+    faRightToBracket,
+    faMagnifyingGlass
   );
 }
 

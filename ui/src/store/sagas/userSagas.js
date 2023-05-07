@@ -14,10 +14,10 @@ export function* watchUsersSagas() {
 }
 
 export function* fetchUsersSaga(action) {
-  const { loggedUser, token } = action;
+  const { loggedUser } = action;
   yield put(beginApiCall());
   try {
-    const data = yield call(api.fetchUsersApi, token);
+    const data = yield call(api.fetchUsersApi);
     yield put(userMutations.fetchUsersSuccess(data));
     yield call(fetchLoggedUserSaga, data, loggedUser);
   } catch (error) {

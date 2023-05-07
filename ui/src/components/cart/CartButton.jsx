@@ -7,10 +7,7 @@ const CartButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <button
-        className="btn btn-tertiary btn-block btn-round"
-        onClick={() => setIsOpen(true)}
-      >
+      <button className="btn cart for-buy" onClick={() => setIsOpen(true)}>
         <i>
           <FontAwesomeIcon icon="fa-solid fa-cart-shopping" />
         </i>

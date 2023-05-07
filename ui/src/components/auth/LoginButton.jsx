@@ -5,10 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
   return (
-    <button
-      className="btn btn-secondary btn-right btn-round"
-      onClick={loginWithRedirect}
-    >
+    <button className="btn" onClick={loginWithRedirect}>
       <i>
         <FontAwesomeIcon icon="fa-solid fa-right-to-bracket" />
       </i>

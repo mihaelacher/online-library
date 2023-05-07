@@ -5,10 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const LogoutButton = () => {
   const { logout } = useAuth0();
   return (
-    <button
-      className="btn btn-quarternary btn-right btn-round"
-      onClick={logout}
-    >
+    <button className="btn" onClick={logout}>
       <i>
         <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
       </i>

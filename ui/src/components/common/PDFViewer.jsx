@@ -26,7 +26,7 @@ function PDFViewer({ book_pdf_url }) {
           &#8250;
         </button>
         <p className="centered">
-          Page {pageNumber} of {numPages}
+          Страница {pageNumber} от {numPages}
         </p>
       </nav>
 
@@ -36,7 +36,11 @@ function PDFViewer({ book_pdf_url }) {
         }}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        <Page pageNumber={pageNumber} />
+        <Page
+          pageNumber={pageNumber}
+          renderTextLayer={false}
+          renderAnnotationLayer={false}
+        />
       </Document>
     </>
   );

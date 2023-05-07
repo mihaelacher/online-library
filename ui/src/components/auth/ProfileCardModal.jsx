@@ -15,12 +15,13 @@ const ProfileCardModal = ({ isOpen, setIsOpen, username }) => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      width: "fit-content",
-      height: "fit-content",
+      width: "28%",
+      height: "44%",
       padding: 0,
       border: 0,
       borderRadius: 0,
       overflow: "auto",
+      zIndex: 100,
     },
   };
   return (

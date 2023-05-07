@@ -3,7 +3,6 @@ import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import * as bookMutations from "../mutations/bookMutations";
 import { beginApiCall } from "../mutations/apiMutations";
 import * as api from "../api/bookApi";
-import { intersect } from "../../utils/common/arrUtil";
 
 export function* watchBooksSagas() {
   yield all([
@@ -62,19 +61,13 @@ export function* fetchBooksSaga(action) {
 }
 
 export function* fetchSearchBooksSaga(action) {
-  const { params } = action;
+  const { searchText } = action;
   let searchBooks = yield select((state) => state.books);
-  if (params.searchText.length) {
+  if (searchText.length) {
     searchBooks = searchBooks.filter(
       (book) =>
-        book.title.indexOf(params.searchText) >= 0 ||
-        book.description.indexOf(params.searchText) >= 0
-    );
-  }
-
-  if (params.genres.length) {
-    searchBooks = searchBooks.filter(
-      (book) => intersect(book.genres, params.genres).length
+        book.title.indexOf(searchText) >= 0 ||
+        book.description.indexOf(searchText) >= 0
     );
   }
 

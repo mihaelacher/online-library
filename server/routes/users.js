@@ -1,12 +1,9 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 
-import { checkJwt } from "../middleware/auth.middleware.js";
 import db from "../config/db.js";
 
 const usersRouter = express.Router();
-
-usersRouter.use(checkJwt);
 
 usersRouter.get("/", async (req, res) => {
   try {

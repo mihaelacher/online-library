@@ -1,36 +1,83 @@
-.header-section-top {
-  width: 80%;
-  float: left;
-  background-color: #2b2a29;
-  clip-path: polygon(0 0, 100% 0, 96% 100%, 3% 100%);
-  height: auto;
-  padding: 10px 0px;
-  margin-left: 10%;
-}
-
-.custom-menu {
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.custom-menu ul {
-  margin: 0px;
-  padding: 0px;
+#header-wrap .action-menu {
   display: inline-block;
+  align-items: baseline;
+}
+#header-wrap .action-menu span.opennav.openicon {
+  cursor: pointer;
+}
+.action-menu .icon {
+  font-size: 18px;
+  font-weight: 800;
+}
+.action-menu .search-bar {
+  overflow: hidden;
+}
+.action-menu .search-bar,
+.action-menu .open-icon-wrap {
+  width: 40px;
+  height: 40px;
+  background: #efeee8;
+  border-radius: 40px;
+  margin-right: 25px;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s width cubic-bezier(0, 0.75, 0.49, 0.99);
+}
+#header-wrap .search-button {
+  order: 1;
+  padding-right: 10px;
+  padding-left: 10px;
+  text-decoration: none;
+  color: var(--body-text-color);
+}
+#header-wrap.show .search-bar {
+  width: 300px;
+}
+#header-wrap .search-bar form {
+  margin: 0;
+}
+#header-wrap .search-box .search-input {
+  width: 250px;
+  border: 0;
+  margin-bottom: 0;
+  font-weight: 300;
+  padding-left: 20px;
+  background: #efeee8;
 }
 
-.custom-menu li {
-  float: left;
-  font-size: 16px;
-  color: #f1f1f1;
-  padding: 6px 10px 0px 10px;
+.action-menu .side-nav-bar .menu-btn a,
+.action-menu .searchbar a {
+  color: #000;
+  text-decoration: none;
+  line-height: 2.2;
+}
+.action-menu .icon.icon-menu-btn:hover {
+  color: #fff;
+  text-decoration: none;
+}
+.action-menu .menu-btn a {
+  color: #07051a;
+  text-decoration: none;
+}
+.action-menu .icon.icon-menu-btn:hover {
+  color: var(--accent-color);
+  text-decoration: none;
 }
 
-.custom-menu li a {
-  color: #f1f1f1;
+@media screen and (max-width: 768px) {
+  .action-menu .search-bar {
+    margin-top: 20px;
+    width: 100%;
+  }
 }
 
-.custom-menu li a:hover {
-  color: #f26522;
+#header {
+  padding: 40px 0;
+}
+#header .menu-list a {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.12em;
 }

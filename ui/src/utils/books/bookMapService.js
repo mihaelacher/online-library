@@ -27,7 +27,7 @@ export function groupByGenre(books, rows = null) {
     genres.forEach((key) => {
       booksGroupedByGenre[key] = groupByRows(
         Object.values(booksGroupedByGenre[key]),
-        3
+        rows
       );
     });
   }

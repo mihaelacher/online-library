@@ -24,9 +24,9 @@ export const fetchBooksSuccess = (books, loggedUser) => ({
   loggedUser,
 });
 
-export const fetchSearchBooks = (params) => ({
+export const fetchSearchBooks = (searchText) => ({
   type: FETCH_SEARCH_BOOKS,
-  params,
+  searchText,
 });
 
 export const fetchSearchBooksSuccess = (searchBooks) => ({

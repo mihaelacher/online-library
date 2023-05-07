@@ -10,9 +10,8 @@ export const UNFOLLOW_USER_FAILED = "UNFOLLOW_USER_FAILED";
 export const FETCH_LOGGED_USER = "FETCH_LOGGED_USER";
 export const FETCH_LOGGED_USER_SUCCESS = "FETCH_LOGGED_USER_SUCCESS";
 
-export const fetchUsers = (token, loggedUser) => ({
+export const fetchUsers = (loggedUser) => ({
   type: FETCH_USERS,
-  token,
   loggedUser,
 });
 
