@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import BookItemsRow from "./BookItemsRow";
 import Loading from "../common/Loading";
+import BookGenreTabs from "./BookGenreTabs";
 import { groupByGenre } from "../../utils/books/bookMapService";
 import "./BookGenreSection.css";
 
 export const BookGenreSection = ({ books, loading }) => {
   const [booksByGenre, setBooksByGenre] = useState(null);
   const [genres, setGenres] = useState(null);
-  const [selectedGenre, setSelectedGerne] = useState(null);
 
   useEffect(() => {
     const booksByGenre = groupByGenre(books, 4);
     setBooksByGenre(booksByGenre);
     setGenres(Object.keys(booksByGenre));
-    setSelectedGerne(genres?.shift());
   }, [books]);
-
-  const _setSelectedGerne = (e) => {
-    console.log(e.target.id);
-    setSelectedGerne(e.target.id);
-  };
 
   if (loading) {
     return <Loading />;
@@ -40,35 +33,7 @@ export const BookGenreSection = ({ books, loading }) => {
                 <h2 className="section-title">Книги по жанр</h2>
               </div>
 
-              <ul className="tabs">
-                {genres &&
-                  genres.map(function (genre, i) {
-                    return (
-                      <li
-                        id={genre}
-                        onClick={_setSelectedGerne}
-                        className={`tab ${
-                          selectedGenre === genre ? "active" : ""
-                        }`}
-                      >
-                        {genre}
-                      </li>
-                    );
-                  })}
-              </ul>
-              {genres &&
-                genres.map(function (genre, i) {
-                  return booksByGenre[genre].map(function (bookRow, i) {
-                    return (
-                      <BookItemsRow
-                        key={i}
-                        books={bookRow}
-                        genre={genre}
-                        selectedGenre={selectedGenre}
-                      ></BookItemsRow>
-                    );
-                  });
-                })}
+              <BookGenreTabs genres={genres} booksByGenre={booksByGenre} />
             </div>
           </div>
         </div>

@@ -7,10 +7,10 @@ import {
   requestFollowUser,
   requestUnfollowUser,
 } from "../../store/mutations/userMutations";
+import "./ProfileCard.css";
 
 const ProfileCard = ({
   username,
-  sizeClass = "col col-md-9 col-lg-7 col-xl-5",
   profileUser,
   loggedUser,
   loading,
@@ -51,57 +51,31 @@ const ProfileCard = ({
   };
 
   return (
-    <div className="container py-5 h-100">
-      <div className="row d-flex justify-content-center align-items-center h-100">
-        <div className={sizeClass}>
-          <div className="card" style={{ borderRadius: "15px" }}>
-            <div className="card-body p-4">
-              <div className="d-flex text-black">
-                <div className="flex-shrink-0">
-                  <img
-                    className="img-fluid"
-                    style={{
-                      width: "180px",
-                      borderRadius: "10px",
-                      marginTop: "5%",
-                    }}
-                    src={profileUser?.pic}
-                    alt="profile-pic"
-                  />
-                </div>
-                <div className="flex-grow-1 ms-3">
-                  <p className="mb-2 pb-1" style={{ color: "#2b2a2a" }}>
-                    {profileUser?.username}
-                  </p>
-                  <div
-                    className="d-flex justify-content-start rounded-3 p-2 mb-2"
-                    style={{ backgroundColor: "#efefef" }}
-                  >
-                    <div>
-                      <p className="small text-muted mb-1">Последвал</p>
-                      <p className="mb-0">{profileUser?.following.length}</p>
-                    </div>
-                    <div className="px-3">
-                      <p className="small text-muted mb-1">Последователи</p>
-                      <p className="mb-0">{profileUser?.followers.length}</p>
-                    </div>
-                  </div>
-                  <div className="d-flex pt-1">
-                    {isAuthenticated && !isMyProfile() && (
-                      <button
-                        type="button"
-                        className="btn btn-primary flex-grow-1"
-                        onClick={isFollowing() ? unFollowUser : followUser}
-                      >
-                        {isFollowing() ? "Следвам" : "Последвай"}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="profile-card-container">
+      <div className="team-member text-center">
+        <h3>Профил</h3>
+        <figure>
+          <img src={profileUser?.pic} alt="post" className="member-image" />
+        </figure>
+
+        <div className="member-details text-center">
+          <h4> {profileUser?.username}</h4>
+          <div className="designation colored">
+            Последвал: {profileUser?.following?.length}
+          </div>
+          <div className="designation colored">
+            Последователи: {profileUser?.followers?.length}
           </div>
         </div>
+        {isAuthenticated && !isMyProfile() && (
+          <button
+            type="button"
+            className="btn btn-outline-light"
+            onClick={isFollowing() ? unFollowUser : followUser}
+          >
+            {isFollowing() ? "Следвам" : "Последвай"}
+          </button>
+        )}
       </div>
     </div>
   );

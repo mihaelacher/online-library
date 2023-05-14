@@ -36,34 +36,34 @@ export const BookItemBestSeller = ({ books, users, loading }) => {
   }
 
   return (
-    <section id="best-selling" class="leaf-pattern-overlay">
-      <div class="corner-pattern-overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-            <div class="row">
-              <div class="col-md-6">
-                <figure class="products-thumb">
+    <section id="best-selling" className="leaf-pattern-overlay">
+      <div className="corner-pattern-overlay"></div>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-8 col-md-offset-2">
+            <div className="row">
+              <div className="col-md-6">
+                <figure className="products-thumb">
                   <img
                     src={bestSeller?.cover_url}
                     alt="book"
-                    class="single-image"
+                    className="single-image"
                   />
                 </figure>
               </div>
 
-              <div class="col-md-6">
-                <div class="product-entry">
-                  <h2 class="section-title divider">Бест селър</h2>
+              <div className="col-md-6">
+                <div className="product-entry">
+                  <h2 className="section-title divider">Бест селър</h2>
 
-                  <div class="products-content">
-                    <div class="author-name">От {bestSeller?.author}</div>
-                    <h3 class="item-title">{bestSeller?.title}</h3>
+                  <div className="products-content">
+                    <div className="author-name">От {bestSeller?.author}</div>
+                    <h3 className="item-title">{bestSeller?.title}</h3>
                     <p>{bestSeller?.description?.slice(0, 150)}...</p>
-                    <div class="item-price">{bestSeller?.price}лв.</div>
-                    <div class="btn-wrap">
-                      <a class="btn-accent-arrow">
-                        Наеми сега <i class="icon icon-ns-arrow-right"></i>
+                    <div className="item-price">{bestSeller?.price}лв.</div>
+                    <div className="btn-wrap">
+                      <a className="btn-accent-arrow">
+                        Наеми сега <i className="icon icon-ns-arrow-right"></i>
                       </a>
                     </div>
                   </div>

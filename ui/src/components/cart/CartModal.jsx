@@ -11,27 +11,47 @@ function CartModal({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
   const { isEmpty, items, removeItem } = useCart();
   const [total, _setTotal] = useState(0);
+  const [discount, _setDiscount] = useState(0);
 
   async function handleCheckout(e) {
     e.preventDefault();
     navigate("/payment");
   }
 
+  const setDiscount = useCallback(() => {
+    if (!isEmpty) {
+      const cartItems = Array.isArray(items) ? items : [items];
+      const discount = cartItems.reduce(
+        (total, item) =>
+          parseFloat(
+            typeof total == "object"
+              ? total.promoPrice
+                ? total.promoPrice
+                : 0
+              : total
+          ) + parseFloat(item.promoPrice ? item.promoPrice : 0)
+      );
+
+      _setDiscount(discount);
+    }
+  }, [isEmpty, items]);
+
   const setTotal = useCallback(() => {
     if (!isEmpty) {
       const cartItems = Array.isArray(items) ? items : [items];
-      const value = cartItems.reduce(
+      const totalPrice = cartItems.reduce(
         (total, item) =>
           parseFloat(typeof total == "object" ? total.price : total) +
           parseFloat(item.price)
       );
-      _setTotal(value);
+      _setTotal(totalPrice);
     }
   }, [isEmpty, items]);
 
   useEffect(() => {
     setTotal();
-  }, [setTotal, items]);
+    setDiscount();
+  }, [setTotal, setDiscount, items]);
 
   return (
     <ReactModal
@@ -56,7 +76,7 @@ function CartModal({ isOpen, setIsOpen }) {
                     Книга
                   </th>
                   <th
-                    className="text-right py-3 px-4"
+                    className="text-center py-3 px-4"
                     style={{ width: "100px" }}
                   >
                     Цена
@@ -91,11 +111,24 @@ function CartModal({ isOpen, setIsOpen }) {
                         </div>
                       </td>
                       <td className="text-right font-weight-semibold align-middle p-4">
-                        {item.price}лв.
+                        {item.promoPrice ? (
+                          <div className="priceContainer">
+                            <div className="item-price promoPrice">
+                              {item.price}лв
+                            </div>
+                            <div className="item-price">
+                              {item.promoPrice}лв
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="priceContainer">
+                            <div className="item-price">{item.price}лв</div>
+                          </div>
+                        )}
                       </td>
                       <td className="text-center align-middle px-0">
                         <button
-                          className="shop-tooltip close float-none text-danger"
+                          className="btn shop-tooltip close float-none text-danger"
                           onClick={() => removeItem(item.id)}
                         >
                           <FontAwesomeIcon icon="fa-solid fa-xmark" />
@@ -110,12 +143,12 @@ function CartModal({ isOpen, setIsOpen }) {
 
           <div className="d-flex flex-wrap justify-content-between align-items-center pb-4">
             <div className="d-flex">
-              <div className="text-right mt-4 mr-5">
+              <div className="text-right mt-4" style={{ marginRight: "15px" }}>
                 <label className="text-muted font-weight-normal m-0">
                   Отстъпка
                 </label>
                 <div className="text-large">
-                  <strong>0 лв</strong>
+                  <strong>{discount} лв</strong>
                 </div>
               </div>
               <div className="text-right mt-4">
@@ -123,7 +156,7 @@ function CartModal({ isOpen, setIsOpen }) {
                   Сума
                 </label>
                 <div className="text-large">
-                  <strong>{total} лв</strong>
+                  <strong>{total - discount} лв</strong>
                 </div>
               </div>
             </div>
@@ -132,14 +165,15 @@ function CartModal({ isOpen, setIsOpen }) {
           <div className="float-right">
             <button
               type="button"
-              className="btn btn-lg btn-default md-btn-flat mt-2 mr-3"
+              className="btn btn-outline-accent mt-2"
+              style={{ marginRight: "15px" }}
               onClick={() => setIsOpen(false)}
             >
               Обратно към сайта
             </button>
             <button
               type="button"
-              className="btn btn-lg btn-primary mt-2"
+              className="btn btn-outline-light mt-2"
               onClick={handleCheckout}
             >
               Продължи към плащане

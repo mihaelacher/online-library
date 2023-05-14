@@ -1,6 +1,7 @@
 import { all, call, put, takeEvery, select } from "redux-saga/effects";
 
 import * as userMutations from "../mutations/userMutations";
+import { fetchBooks } from "../mutations/bookMutations";
 import { beginApiCall } from "../mutations/apiMutations";
 import * as api from "../api/userApi";
 
@@ -26,10 +27,12 @@ export function* fetchUsersSaga(action) {
 }
 
 export function* fetchLoggedUserSaga(users, loggedUser) {
-  const user = users.filter((item) => item.username === loggedUser.nickname);
+  const user = users.filter((item) => item.username === loggedUser?.nickname);
   if (user.length) {
-    yield put(userMutations.fetchLoggedUserSuccess(user.shift()));
+    const loggedUser = user.shift();
+    yield put(userMutations.fetchLoggedUserSuccess(loggedUser));
   }
+  yield put(fetchBooks(loggedUser));
 }
 
 export function* followUserSaga(action) {

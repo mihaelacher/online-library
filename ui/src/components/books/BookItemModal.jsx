@@ -7,7 +7,7 @@ import "./BookItemModal.css";
 import ProfileCardModal from "../auth/ProfileCardModal";
 
 function BookItemModal({ book, isOpen, setIsOpen }) {
-  const { user } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { addItem } = useCart();
   return (
@@ -33,11 +33,22 @@ function BookItemModal({ book, isOpen, setIsOpen }) {
                 <div className="product-detail">
                   <h1 className="text-center">{book.title}</h1>
                   <p>{book.author}</p>
-                  <span className="price colored">{book.price}лв.</span>
+                  {book.promoPrice ? (
+                    <div className="priceContainer">
+                      <span className="price colored promoPrice">
+                        {book.price}лв.
+                      </span>
+                      <span className="price colored">
+                        {book.promoPrice}лв.
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="price colored">{book.price}лв.</span>
+                  )}
 
                   <p> {book.description} </p>
 
-                  {user?.nickname !== book.provider ? (
+                  {!isAuthenticated || user?.nickname !== book.provider ? (
                     <>
                       <button
                         name="add-to-cart"

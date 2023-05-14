@@ -24,6 +24,11 @@ export const fetchBooksSuccess = (books, loggedUser) => ({
   loggedUser,
 });
 
+export const fetchBooksFailed = (errors) => ({
+  type: FETCH_BOOKS_FAILED,
+  errors,
+});
+
 export const fetchSearchBooks = (searchText) => ({
   type: FETCH_SEARCH_BOOKS,
   searchText,
@@ -46,6 +51,11 @@ export const createBookSuccess = (book) => ({
   book,
 });
 
+export const createBookFailed = (errors) => ({
+  type: CREATE_BOOK_FAILED,
+  errors,
+});
+
 export const requestBookUpdate = (token, book) => ({
   type: REQUEST_BOOK_UPDATE,
   token,
@@ -57,18 +67,8 @@ export const updateBookSuccess = (book) => ({
   book,
 });
 
-export const createBookFailed = (errors) => ({
-  type: CREATE_BOOK_FAILED,
-  errors,
-});
-
 export const updateBookFailed = (errors) => ({
   type: UPDATE_BOOK_FAILED,
-  errors,
-});
-
-export const fetchBooksFailed = (errors) => ({
-  type: FETCH_BOOKS_FAILED,
   errors,
 });
 

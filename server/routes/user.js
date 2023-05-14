@@ -28,6 +28,18 @@ userRouter.post("/follow/:username", async (req, res) => {
         return res.status(500).send("Internal Server Error");
       });
 
+    users
+      .updateOne(
+        { username: follower },
+        {
+          $push: { following: following },
+        }
+      )
+      .catch((err) => {
+        console.log(err); //debug
+        return res.status(500).send("Internal Server Error");
+      });
+
     return res.status(200).send("OK");
   } catch (err) {
     console.log(err); //debug
@@ -48,6 +60,18 @@ userRouter.post("/unfollow/:username", async (req, res) => {
         { username: following },
         {
           $pull: { followers: follower },
+        }
+      )
+      .catch((err) => {
+        console.log(err); //debug
+        return res.status(500).send("Internal Server Error");
+      });
+
+    users
+      .updateOne(
+        { username: follower },
+        {
+          $pull: { following: following },
         }
       )
       .catch((err) => {

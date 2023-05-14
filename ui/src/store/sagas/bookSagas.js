@@ -3,6 +3,7 @@ import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import * as bookMutations from "../mutations/bookMutations";
 import { beginApiCall } from "../mutations/apiMutations";
 import * as api from "../api/bookApi";
+import { intersect } from "../../utils/common/arrUtil";
 
 export function* watchBooksSagas() {
   yield all([
@@ -50,11 +51,26 @@ export function* bookDeleteSaga(action) {
 }
 
 export function* fetchBooksSaga(action) {
-  const { loggedUser } = action;
   yield put(beginApiCall());
   try {
+    const loggedUser = yield select((state) => state.loggedUser) ??
+      action.loggedUser;
+    console.log(loggedUser);
     const data = yield call(api.fetchBooksApi);
-    yield put(bookMutations.fetchBooksSuccess(data, loggedUser));
+    const followers = loggedUser?.followers;
+    const following = loggedUser?.following;
+    const promoBooksUsers = intersect(following, followers);
+
+    yield put(
+      bookMutations.fetchBooksSuccess(
+        data.map((book) =>
+          promoBooksUsers.includes(book.provider)
+            ? { ...book, promoPrice: book.price / 2 }
+            : book
+        ),
+        loggedUser?.email
+      )
+    );
   } catch (error) {
     yield put(bookMutations.fetchBooksFailed(error.message));
   }

@@ -18,7 +18,7 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
         .flat();
       setRentedBooks(
         books.filter((book) => {
-          return rentedBooks.includes(book.id);
+          return rentedBooks?.includes(book.id);
         })
       );
 
@@ -90,7 +90,7 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
                       })}
                     </div>
                     <div
-                      class="tab-pane fade"
+                      className="tab-pane fade"
                       id="nav-profile"
                       role="tabpanel"
                       aria-labelledby="nav-profile-tab"
@@ -100,7 +100,7 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
                       })}
                     </div>
                     <div
-                      class="tab-pane fade"
+                      className="tab-pane fade"
                       id="nav-contact"
                       role="tabpanel"
                       aria-labelledby="nav-contact-tab"

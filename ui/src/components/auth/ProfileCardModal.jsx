@@ -16,7 +16,7 @@ const ProfileCardModal = ({ isOpen, setIsOpen, username }) => {
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
       width: "28%",
-      height: "44%",
+      height: "55%",
       padding: 0,
       border: 0,
       borderRadius: 0,
@@ -32,7 +32,7 @@ const ProfileCardModal = ({ isOpen, setIsOpen, username }) => {
       ariaHideApp={false}
       style={customStyles}
     >
-      <ConnectedProfileCard sizeClass="" username={username} />
+      <ConnectedProfileCard username={username} />
     </ReactModal>
   );
 };

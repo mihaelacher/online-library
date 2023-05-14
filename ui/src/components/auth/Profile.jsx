@@ -6,7 +6,13 @@ import Loading from "../common/Loading";
 
 const Profile = () => {
   const { user } = useAuth0();
-  return <ConnectedProfileCard showFollow={false} username={user?.nickname} />;
+  return (
+    <section className="padding-large">
+      <div className="container">
+        <ConnectedProfileCard showFollow={false} username={user?.nickname} />
+      </div>
+    </section>
+  );
 };
 
 export default withAuthenticationRequired(Profile, {

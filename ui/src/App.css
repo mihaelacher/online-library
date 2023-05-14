@@ -4172,3 +4172,26 @@ body.stellarnav-noscroll-x {
     display: none;
   }
 }
+
+.priceContainer {
+  margin: 1em;
+  padding: 1em;
+  flex-basis: 500px !important;
+  display: inline-block;
+}
+
+.promoPrice {
+  color: rgba(red, 0.5);
+  text-decoration: none;
+  position: relative;
+}
+
+.promoPrice:before {
+  content: " ";
+  width: 100%;
+  border-top: 2px solid red;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: rotate(-7deg);
+}

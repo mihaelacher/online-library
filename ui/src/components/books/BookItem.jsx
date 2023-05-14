@@ -17,7 +17,10 @@ export const BookItem = ({ book }) => {
           <img src={book.cover_url} alt="Books" className="product-item" />
           {user?.nickname !== book.provider && (
             <button
-              onClick={() => addItem(book)}
+              onClick={() => {
+                addItem(book);
+                setIsOpen(false);
+              }}
               type="button"
               className="add-to-cart"
             >
@@ -27,7 +30,14 @@ export const BookItem = ({ book }) => {
           <figcaption>
             <h3>{book.title}</h3>
             <p>{book.author}</p>
-            <div className="item-price">{book.price}лв</div>
+            {book.promoPrice ? (
+              <div className="priceContainer">
+                <div className="item-price promoPrice">{book.price}лв</div>
+                <div className="item-price">{book.promoPrice}лв</div>
+              </div>
+            ) : (
+              <div className="item-price">{book.price}лв</div>
+            )}
           </figcaption>
         </figure>
       </div>

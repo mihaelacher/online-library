@@ -73,7 +73,7 @@ const BookItemForm = ({
         >
           {serverError && <div className="bar error">{serverError}</div>}
 
-          <div class="col-md-6">
+          <div className="col-md-6">
             <label htmlFor="title">Заглавие</label>
             <Form.Item
               name="title"
@@ -93,7 +93,7 @@ const BookItemForm = ({
             </Form.Item>
           </div>
 
-          <div class="col-md-6">
+          <div className="col-md-6">
             <label htmlFor="author">Автор</label>
             <Form.Item
               className="u-full-width"
@@ -113,7 +113,7 @@ const BookItemForm = ({
             </Form.Item>
           </div>
 
-          <div class="col-md-12">
+          <div className="col-md-12">
             <label htmlFor="description">Пълно описание</label>
             <Form.Item
               name="description"

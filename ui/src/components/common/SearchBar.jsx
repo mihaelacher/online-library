@@ -25,14 +25,14 @@ const SearchBar = ({ fetchSearchBooks }) => {
   };
 
   return (
-    <div class="searchBox">
+    <div className="searchBox">
       <input
         onChange={handleSearchChange}
-        class="searchInput"
+        className="searchInput"
         type="text"
         placeholder="Търси..."
       />
-      <button class="searchButton" onClick={handleSearchSubmit}>
+      <button className="searchButton" onClick={handleSearchSubmit}>
         <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
       </button>
     </div>
