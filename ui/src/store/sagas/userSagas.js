@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery, select } from "redux-saga/effects";
+import { all, call, put, takeEvery } from "redux-saga/effects";
 
 import * as userMutations from "../mutations/userMutations";
 import { fetchBooks } from "../mutations/bookMutations";

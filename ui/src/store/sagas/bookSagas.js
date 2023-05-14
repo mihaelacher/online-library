@@ -55,7 +55,6 @@ export function* fetchBooksSaga(action) {
   try {
     const loggedUser = yield select((state) => state.loggedUser) ??
       action.loggedUser;
-    console.log(loggedUser);
     const data = yield call(api.fetchBooksApi);
     const followers = loggedUser?.followers;
     const following = loggedUser?.following;
