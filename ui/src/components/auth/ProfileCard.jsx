@@ -1,6 +1,8 @@
 import React from "react";
+import Talk from "talkjs";
 import { connect } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Loading from "../common/Loading";
 import {
@@ -39,6 +41,36 @@ const ProfileCard = ({
     requestUnfollowUser(loading.username, username, token);
   };
 
+  const sendMessage = (e) => {
+    e.preventDefault();
+
+    const me = new Talk.User({
+      id: loggedUser._id,
+      name: loggedUser.username,
+      photoUrl: loggedUser.pic,
+    });
+
+    const session = new Talk.Session({
+      appId: "tKSRSJUl",
+      me: me,
+    });
+
+    const other = new Talk.User({
+      id: profileUser._id,
+      name: profileUser.username,
+      photoUrl: profileUser.pic,
+    });
+
+    const conversation = session.getOrCreateConversation(
+      Talk.oneOnOneId(me, other)
+    );
+    conversation.setParticipant(me);
+    conversation.setParticipant(other);
+    const popup = session.createPopup();
+    popup.select(conversation);
+    popup.mount({ show: true });
+  };
+
   const isMyProfile = () => {
     if (!loggedUser) {
       return false;
@@ -71,9 +103,29 @@ const ProfileCard = ({
           <button
             type="button"
             className="btn btn-outline-light"
+            style={{ marginRight: "5px" }}
+            onClick={sendMessage}
+          >
+            <FontAwesomeIcon
+              style={{ width: "2em" }}
+              icon="fa-solid fa-comments"
+            />
+          </button>
+        )}
+        {isAuthenticated && !isMyProfile() && (
+          <button
+            type="button"
+            className="btn btn-outline-light"
             onClick={isFollowing() ? unFollowUser : followUser}
           >
-            {isFollowing() ? "Следвам" : "Последвай"}
+            {isFollowing() ? (
+              <FontAwesomeIcon
+                style={{ color: "#f4132d", width: "1em" }}
+                icon="fa-solid fa-user-group"
+              />
+            ) : (
+              <FontAwesomeIcon icon="fa-solid fa-user-group" />
+            )}
           </button>
         )}
       </div>

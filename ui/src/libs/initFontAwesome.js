@@ -7,6 +7,11 @@ import {
   faXmark,
   faRightToBracket,
   faMagnifyingGlass,
+  faHouse,
+  faUser,
+  faBook,
+  faComments,
+  faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
 function initFontAwesome() {
@@ -17,7 +22,12 @@ function initFontAwesome() {
     faCartShopping,
     faXmark,
     faRightToBracket,
-    faMagnifyingGlass
+    faMagnifyingGlass,
+    faHouse,
+    faUser,
+    faBook,
+    faComments,
+    faUserGroup
   );
 }
 

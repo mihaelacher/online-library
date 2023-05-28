@@ -1,30 +1,38 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function AuthNavBar({ windowLocation, setWindowLocation }) {
-  const { isAuthenticated } = useAuth0();
   return (
-    isAuthenticated && (
-      <>
-        <li
-          onClick={() => setWindowLocation(window.location.href)}
-          className={`menu-item ${
-            windowLocation.endsWith("/profile") ? "active" : ""
-          }`}
-        >
-          <Link to={"/profile"}>Профил</Link>
-        </li>
-        <li
-          onClick={() => setWindowLocation(window.location.href)}
-          className={`menu-item ${
-            windowLocation.endsWith("/mybooks") ? "active" : ""
-          }`}
-        >
-          <Link to={"/mybooks"}>Моите книги</Link>
-        </li>
-      </>
-    )
+    <>
+      <li
+        className={`${windowLocation.endsWith("/profile") ? "active" : ""}`}
+        onClick={() => setWindowLocation(window.location.href)}
+      >
+        <Link to={"/profile"}>
+          <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-user" />
+          <span className="li-text">Профил</span>
+        </Link>
+      </li>
+      <li
+        className={`${windowLocation.endsWith("/chatbox") ? "active" : ""}`}
+        onClick={() => setWindowLocation(window.location.href)}
+      >
+        <Link to={"/chatbox"}>
+          <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-comments" />
+          <span className="li-text">Съобщения</span>
+        </Link>
+      </li>
+      <li
+        className={`${windowLocation.endsWith("/mybooks") ? "active" : ""}`}
+        onClick={() => setWindowLocation(window.location.href)}
+      >
+        <Link to={"/mybooks"}>
+          <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-book" />
+          <span className="li-text">Моите книги</span>
+        </Link>
+      </li>
+    </>
   );
 }
 

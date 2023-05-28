@@ -10,6 +10,17 @@ const Footer = () => {
       <footer id="footer">
         <div className="container">
           <div className="row">
+            <div class="col-md-4">
+              <div class="footer-item">
+                <div class="company-brand">
+                  <img
+                    src="/images/logo_transparent.png"
+                    alt="logo"
+                    class="footer-logo"
+                  />
+                </div>
+              </div>
+            </div>
             <div className="col-md-4">
               <div className="footer-menu">
                 <h5>Открий</h5>
@@ -18,10 +29,10 @@ const Footer = () => {
                     <Link to="/">Начало </Link>
                   </li>
                   <li className="menu-item">
-                    <Link to="/books">Книги </Link>
+                    <Link to="/books">Търси книги </Link>
                   </li>
                   <li className="menu-item">
-                    <a href="/mybooks">Моите книги</a>
+                    {isAuthenticated && <a href="/mybooks">Моите книги</a>}
                   </li>
                 </ul>
               </div>
@@ -44,9 +55,6 @@ const Footer = () => {
                       <Link onClick={loginWithRedirect}>Вход</Link>
                     </li>
                   )}
-                  <li className="menu-item">
-                    <Link to="/profile">Моят профил</Link>
-                  </li>
                 </ul>
               </div>
             </div>
@@ -60,7 +68,7 @@ const Footer = () => {
               <div className="copyright">
                 <div className="row">
                   <div className="col-md-6">
-                    <p>© 2023 Всички права запазени. Онлайн Библиотека</p>
+                    <p>© 2023 Всички права запазени. Книжен Шеринг</p>
                   </div>
                 </div>
               </div>

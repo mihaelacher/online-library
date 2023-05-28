@@ -18,7 +18,7 @@ function BookItemModal({ book, isOpen, setIsOpen }) {
         onRequestClose={() => setIsOpen(false)}
         ariaHideApp={false}
       >
-        <section className="bg-sand padding-large">
+        <section className="bg-sand">
           <div className="container">
             <div className="row">
               <div className="col-md-6">
