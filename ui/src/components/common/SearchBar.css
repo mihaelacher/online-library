@@ -1,9 +1,7 @@
 .searchBox {
   position: absolute;
-  transform: translate(-50%, 50%);
+  transform: translate(-10%, 50%);
   height: 40px;
-  /* border-radius: 40px;
-  padding: 10px; */
 }
 
 .searchBox:hover > .searchInput {

@@ -6,13 +6,12 @@ import AuthNavBar from "./AuthNavBar";
 import "./Header.css";
 
 function SideBar() {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
   const [windowLocation, setWindowLocation] = useState("/");
   const [isMouseInside, _setIsMouseInside] = useState(false);
 
   useEffect(() => {
     setWindowLocation(window.location.href);
-    console.log(isAuthenticated);
   }, [window.location.href]);
 
   const mouseEnter = () => {
@@ -59,6 +58,7 @@ function SideBar() {
             />
             {isAuthenticated && (
               <AuthNavBar
+                user={user}
                 windowLocation={windowLocation}
                 setWindowLocation={setWindowLocation}
               />

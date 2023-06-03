@@ -4,12 +4,9 @@ import { useEffect, useState, useRef } from "react";
 
 const ChatComponent = ({ loggedUser }) => {
   const chatboxEl = useRef();
-
-  // wait for TalkJS to load
   const [talkLoaded, markTalkLoaded] = useState(false);
 
   useEffect(() => {
-    console.log(loggedUser);
     Talk.ready.then(() => markTalkLoaded(true));
 
     if (talkLoaded && loggedUser) {
@@ -23,11 +20,6 @@ const ChatComponent = ({ loggedUser }) => {
         appId: "tKSRSJUl",
         me: currentUser,
       });
-
-      // const conversationId = Talk.oneOnOneId(currentUser, otherUser);
-      // const conversation = session.getOrCreateConversation(conversationId);
-      // conversation.setParticipant(currentUser);
-      // conversation.setParticipant(otherUser);
 
       const inbox = session.createInbox();
       inbox.mount(chatboxEl.current);

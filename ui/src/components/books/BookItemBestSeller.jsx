@@ -8,7 +8,7 @@ export const BookItemBestSeller = ({ books, users, loading }) => {
 
   useEffect(() => {
     let rentedBooks = [];
-    users.forEach((user) => {
+    Object.values(users).forEach((user) => {
       rentedBooks = rentedBooks.concat(
         user?.orders?.map(({ bookIds }) => bookIds)
       );

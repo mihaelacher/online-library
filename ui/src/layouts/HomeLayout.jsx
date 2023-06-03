@@ -7,12 +7,14 @@ import Footer from "../components/common/Footer";
 import SideBar from "../components/common/SideBar";
 import { store } from "../store/index";
 import { fetchUsers } from "../store/mutations/userMutations";
+import { fetchComments } from "../store/mutations/commentMutations";
 
 function HomeLayout() {
   const { user } = useAuth0();
 
   useEffect(() => {
     store.dispatch(fetchUsers(user));
+    store.dispatch(fetchComments());
   }, [user]);
 
   return (

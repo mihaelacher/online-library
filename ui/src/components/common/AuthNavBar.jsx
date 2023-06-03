@@ -2,18 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function AuthNavBar({ windowLocation, setWindowLocation }) {
+function AuthNavBar({ user, windowLocation, setWindowLocation }) {
   return (
     <>
-      <li
-        className={`${windowLocation.endsWith("/profile") ? "active" : ""}`}
-        onClick={() => setWindowLocation(window.location.href)}
-      >
-        <Link to={"/profile"}>
-          <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-user" />
-          <span className="li-text">Профил</span>
-        </Link>
-      </li>
       <li
         className={`${windowLocation.endsWith("/chatbox") ? "active" : ""}`}
         onClick={() => setWindowLocation(window.location.href)}
@@ -24,12 +15,20 @@ function AuthNavBar({ windowLocation, setWindowLocation }) {
         </Link>
       </li>
       <li
-        className={`${windowLocation.endsWith("/mybooks") ? "active" : ""}`}
+        className={`${windowLocation.endsWith("/profile") ? "active" : ""}`}
         onClick={() => setWindowLocation(window.location.href)}
       >
-        <Link to={"/mybooks"}>
-          <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-book" />
-          <span className="li-text">Моите книги</span>
+        <Link to={"/profile"}>
+          <img
+            style={{
+              borderRadius: "50%",
+              maxWidth: "42px",
+              marginRight: "5px",
+            }}
+            src={user.picture}
+            alt="profile-pic"
+          />
+          <span className="li-text">Профил</span>
         </Link>
       </li>
     </>

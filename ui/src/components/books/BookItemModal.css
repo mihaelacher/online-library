@@ -87,3 +87,47 @@
 .price.colored.promoPrice:before {
   height: 10px;
 }
+
+.ReactModal__Overlay .ReactModal__Overlay--after-open {
+  z-index: 50;
+}
+
+.scrollable-div {
+  height: 700px;
+  overflow: auto;
+}
+
+.scrollable-div::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.bdge {
+  height: 21px;
+  background-color: orange;
+  color: #fff;
+  font-size: 11px;
+  padding: 8px;
+  border-radius: 4px;
+  line-height: 3px;
+}
+
+.dot {
+  height: 7px;
+  width: 7px;
+  margin-top: 3px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.img-fluid {
+  width: 40px;
+  height: 40px;
+  margin-right: 6px;
+}

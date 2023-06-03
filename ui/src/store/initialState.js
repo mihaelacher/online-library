@@ -5,6 +5,7 @@ export const initialState = {
   providedBooks: [],
   rentedBooks: [],
   users: [],
+  comments: [],
   apiCallsInProgress: 0,
   errors: {},
 };

@@ -4,6 +4,7 @@ import createSagaMiddleware from "redux-saga";
 
 import { watchBooksSagas } from "./sagas/bookSagas";
 import { watchUsersSagas } from "./sagas/userSagas";
+import { watchCommentsSagas } from "./sagas/commentSagas";
 import rootReducer from "./reducers/rootReducer";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -22,3 +23,4 @@ export const store = configureStore({
 
 sagaMiddleware.run(watchBooksSagas);
 sagaMiddleware.run(watchUsersSagas);
+sagaMiddleware.run(watchCommentsSagas);

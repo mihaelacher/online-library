@@ -12,6 +12,9 @@ import {
   faBook,
   faComments,
   faUserGroup,
+  faPaperPlane,
+  faHeart,
+  faHeartCrack,
 } from "@fortawesome/free-solid-svg-icons";
 
 function initFontAwesome() {
@@ -27,7 +30,10 @@ function initFontAwesome() {
     faUser,
     faBook,
     faComments,
-    faUserGroup
+    faUserGroup,
+    faPaperPlane,
+    faHeart,
+    faHeartCrack
   );
 }
 
