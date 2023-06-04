@@ -16,7 +16,6 @@ function HomeLayout() {
   useEffect(() => {
     store.dispatch(fetchUsers(user));
     store.dispatch(fetchComments());
-    store.dispatch(fetchRatings());
   }, [user]);
 
   return (

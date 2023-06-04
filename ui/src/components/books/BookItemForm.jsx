@@ -228,7 +228,7 @@ const BookItemForm = ({
 
 const mapStateToProps = (state, { params: { id } }) => ({
   id,
-  formBook: state.books.find((book) => book._id === id),
+  formBook: Object.values(state.books).find((book) => book._id === id),
   loading: state.apiCallsInProgress > 0,
   serverError: state.errors?.manageBookErrors,
 });

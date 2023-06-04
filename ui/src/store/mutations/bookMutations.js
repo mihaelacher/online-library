@@ -12,6 +12,7 @@ export const UPDATE_BOOK_FAILED = "CREATE_BOOK_FAILED";
 export const REQUEST_BOOK_DELETE = "REQUEST_BOOK_DELETE";
 export const DELETE_BOOK_SUCCESS = "DELETE_BOOK_SUCCESS";
 export const DELETE_BOOK_FAILED = "DELETE_BOOK_FAILED";
+export const RATE_BOoK_SUCCESS = "RATE_BOoK_SUCCESS";
 
 export const fetchBooks = (loggedUser) => ({
   type: FETCH_BOOKS,
@@ -87,4 +88,10 @@ export const deleteBookSuccess = (bookId) => ({
 export const deleteBookFailed = (error) => ({
   type: DELETE_BOOK_FAILED,
   error,
+});
+
+export const rateBookSuccess = (bookId, value) => ({
+  type: RATE_BOoK_SUCCESS,
+  bookId,
+  value,
 });

@@ -28,7 +28,9 @@ export const BookItemBestSeller = ({ books, users, loading }) => {
       Object.entries(booksRentCount).sort(([, a], [, b]) => b - a)
     );
 
-    setBestSeller(books.find((book) => book.id === Object.keys(sorted)[0]));
+    setBestSeller(
+      Object.values(books).find((book) => book.id === Object.keys(sorted)[0])
+    );
   }, [users, books]);
 
   if (loading) {

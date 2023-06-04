@@ -5,6 +5,7 @@ import BookItemForm from "../components/books/BookItemForm";
 import { ConnectedBookList } from "../components/books/BookList";
 import HomePage from "../components/home/HomePage";
 import ChatComponent from "../components/talk/ChatComponent";
+import BookReels from "../components/books/BookReels";
 
 const HomeRoutes = (
   <Route path="/" element={<HomeLayout />}>
@@ -13,6 +14,7 @@ const HomeRoutes = (
     <Route path="/book" element={<BookItemForm />} />
     <Route path="/books" element={<ConnectedBookList />} />
     <Route path="/chatbox" element={<ChatComponent />} />
+    <Route path="reels" element={<BookReels />} />
   </Route>
 );
 

@@ -3,6 +3,7 @@ import { all, call, put, takeEvery } from "redux-saga/effects";
 import * as ratingMutations from "../mutations/ratingMutations";
 import { beginApiCall } from "../mutations/apiMutations";
 import * as api from "../api/ratingApi";
+import { fetchBooks, rateBookSuccess } from "../mutations/bookMutations";
 
 export function* watchRatingsSagas() {
   yield all([
@@ -11,11 +12,12 @@ export function* watchRatingsSagas() {
   ]);
 }
 
-export function* fetchRatingsSaga() {
+export function* fetchRatingsSaga(action) {
   yield put(beginApiCall());
   try {
     const data = yield call(api.fetchRatingsApi);
     yield put(ratingMutations.fetchRatingsSuccess(data));
+    yield put(fetchBooks(action.loggedUser));
   } catch (error) {
     yield put(ratingMutations.fetchRatingsFailed(error.message));
   }
@@ -29,6 +31,7 @@ export function* bookRatingSaga(action) {
     yield put(
       ratingMutations.bookRatingSuccess(username, bookId, value, timestamp)
     );
+    yield put(rateBookSuccess(bookId, value));
   } catch (error) {
     yield put(ratingMutations.bookRatingFailed(error.message));
   }

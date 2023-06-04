@@ -1,55 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { connect } from "react-redux";
 import { useCart } from "react-use-cart";
 import { useAuth0 } from "@auth0/auth0-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Rating from "@mui/material/Rating";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import Typography from "@mui/material/Typography";
 
 import ProfileCardModal from "../auth/ProfileCardModal";
 import CommentSection from "../common/CommentSection";
+import BookRating from "../common/BookRating";
 import { requestBookComment } from "../../store/mutations/commentMutations";
 import { requestBookRating } from "../../store/mutations/ratingMutations";
 import "./BookItemModal.css";
-
-const StyledRating = styled(Rating)({
-  "& .MuiRating-iconFilled": {
-    color: "#ff6d75",
-  },
-  "& .MuiRating-iconHover": {
-    color: "#ff3d47",
-  },
-});
 
 const BookItemModal = ({
   book,
   isOpen,
   setIsOpen,
   comments,
-  bookRatings,
   loading,
   requestBookComment,
   requestBookRating,
 }) => {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [bookRating, setBookRating] = useState(0);
   const { addItem } = useCart();
-
-  useEffect(() => {
-    if (bookRatings) {
-      setBookRating(
-        bookRatings?.reduce(function (sum, el) {
-          return sum + el["value"];
-        }, 0) / bookRatings?.length
-      );
-    }
-  }, [bookRatings]);
 
   const handleRating = async (event, value) => {
     event.preventDefault();
@@ -57,144 +31,147 @@ const BookItemModal = ({
     requestBookRating(user.nickname, book._id, value, token);
   };
 
+  const customStyles = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    content: {
+      top: "50%",
+      left: "52%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      width: "78%",
+      height: "90%",
+      zIndex: 80,
+      overflowX: "hidden",
+    },
+  };
+
   return (
     <>
       <ReactModal
+        style={customStyles}
         isOpen={isOpen}
         contentLabel="Book Modal"
         onRequestClose={() => setIsOpen(false)}
         ariaHideApp={false}
       >
-        <section className="bg-sand">
-          <div className="container">
-            <div className="col-md-6">
-              <img className="product-image" src={book.cover_url} alt="book" />
-            </div>
-            <div className="col-md-6">
-              <Box
-                sx={{
-                  "& > legend": { mt: 2 },
-                }}
-              >
-                <Typography component="legend">Рейтинг</Typography>
-                <StyledRating
-                  name="customized-color"
-                  defaultValue={bookRating}
-                  getLabelText={(value) =>
-                    `${value} Heart${value !== 1 ? "s" : ""}`
-                  }
-                  precision={0.5}
-                  icon={<FavoriteIcon fontSize="inherit" />}
-                  emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                  onChange={handleRating}
-                  readOnly={isAuthenticated ? false : true}
-                />
-              </Box>
-              <div className="product-detail">
-                <h1 className="text-center">{book.title}</h1>
-                <p>{book.author}</p>
-                <div className="bootstrap-tabs">
-                  <nav>
-                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                      <button
-                        className="nav-link active"
-                        id="nav-home-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#nav-home"
-                        type="button"
-                        role="tab"
-                        aria-controls="nav-home"
-                        aria-selected="true"
-                      >
-                        За книгата
-                      </button>
-                      <button
-                        className="nav-link"
-                        id="nav-profile-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#nav-profile"
-                        type="button"
-                        role="tab"
-                        aria-controls="nav-profile"
-                        aria-selected="false"
-                      >
-                        Коментари
-                      </button>
-                    </div>
-                  </nav>
-                  <div className="tab-content" id="nav-tabContent">
-                    <div
-                      className="tab-pane fade show active scrollable-div"
-                      id="nav-home"
-                      role="tabpanel"
-                      aria-labelledby="nav-home-tab"
+        <section>
+          <div className="col-md-6">
+            <img className="product-image" src={book.cover_url} alt="book" />
+          </div>
+          <div className="col-md-6">
+            <BookRating
+              rating={book.rating}
+              isReadOnly={isAuthenticated ? false : true}
+              header="Рейтинг"
+              handleRating={handleRating}
+            />
+            <div className="product-detail">
+              <h1 className="text-center">{book.title}</h1>
+              <p>{book.author}</p>
+              <div className="bootstrap-tabs">
+                <nav>
+                  <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button
+                      className="nav-link active"
+                      id="nav-home-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#nav-home"
+                      type="button"
+                      role="tab"
+                      aria-controls="nav-home"
+                      aria-selected="true"
                     >
-                      Цена:{" "}
-                      {book.promoPrice ? (
-                        <div className="priceContainer">
-                          <span className="price colored promoPrice">
-                            {book.price}лв.
-                          </span>
-                          <span className="price colored">
-                            {book.promoPrice}лв.
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="price colored">{book.price}лв.</span>
-                      )}
-                      <p> {book.description} </p>
-                      <div className="button-set">
-                        {!isAuthenticated ||
-                        user?.nickname !== book.provider ? (
-                          <>
-                            <button
-                              type="button"
-                              className="btn btn-outline-light"
-                              onClick={() => addItem(book)}
-                              style={{ marginRight: "10px" }}
-                            >
-                              <FontAwesomeIcon
-                                style={{ width: "2em" }}
-                                icon="fa-solid fa-cart-arrow-down"
-                              />
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-outline-light"
-                              onClick={() => setIsProfileOpen(true)}
-                            >
-                              <FontAwesomeIcon
-                                style={{ width: "2em" }}
-                                icon="fa-solid fa-person-chalkboard"
-                              />
-                            </button>
-                          </>
-                        ) : (
-                          <FontAwesomeIcon
-                            className="icon-button"
-                            onClick={() => setIsProfileOpen(true)}
-                            icon="fa-solid fa-file-pen"
-                          />
-                        )}
+                      За книгата
+                    </button>
+                    <button
+                      className="nav-link"
+                      id="nav-profile-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#nav-profile"
+                      type="button"
+                      role="tab"
+                      aria-controls="nav-profile"
+                      aria-selected="false"
+                    >
+                      Коментари
+                    </button>
+                  </div>
+                </nav>
+                <div className="tab-content" id="nav-tabContent">
+                  <div
+                    className="tab-pane fade show active scrollable-div"
+                    id="nav-home"
+                    role="tabpanel"
+                    aria-labelledby="nav-home-tab"
+                  >
+                    Цена:{" "}
+                    {book.promoPrice ? (
+                      <div className="priceContainer">
+                        <span className="price colored promoPrice">
+                          {book.price}лв.
+                        </span>
+                        <span className="price colored">
+                          {book.promoPrice}лв.
+                        </span>
                       </div>
+                    ) : (
+                      <span className="price colored">{book.price}лв.</span>
+                    )}
+                    <p> {book.description} </p>
+                    <div className="button-set">
+                      {!isAuthenticated || user?.nickname !== book.provider ? (
+                        <>
+                          <button
+                            type="button"
+                            className="btn btn-outline-light"
+                            onClick={() => addItem(book)}
+                            style={{ marginRight: "10px" }}
+                          >
+                            <FontAwesomeIcon
+                              style={{ width: "2em" }}
+                              icon="fa-solid fa-cart-arrow-down"
+                            />
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-light"
+                            onClick={() => setIsProfileOpen(true)}
+                          >
+                            <FontAwesomeIcon
+                              style={{ width: "2em" }}
+                              icon="fa-solid fa-person-chalkboard"
+                            />
+                          </button>
+                        </>
+                      ) : (
+                        <FontAwesomeIcon
+                          className="icon-button"
+                          onClick={() => setIsProfileOpen(true)}
+                          icon="fa-solid fa-file-pen"
+                        />
+                      )}
                     </div>
-                    <div
-                      className="tab-pane fade scrollable-div"
-                      id="nav-profile"
-                      role="tabpanel"
-                      aria-labelledby="nav-profile-tab"
-                    >
-                      <section class="comments-wrap mb-4">
-                        <div class="comment-list mt-4">
-                          <CommentSection
-                            bookId={book._id}
-                            loading={loading}
-                            comments={comments}
-                            requestBookComment={requestBookComment}
-                          />
-                        </div>
-                      </section>
-                    </div>
+                  </div>
+                  <div
+                    className="tab-pane fade scrollable-div"
+                    id="nav-profile"
+                    role="tabpanel"
+                    aria-labelledby="nav-profile-tab"
+                  >
+                    <section class="comments-wrap mb-4">
+                      <div class="comment-list mt-4">
+                        <CommentSection
+                          bookId={book._id}
+                          loading={loading}
+                          comments={comments}
+                          requestBookComment={requestBookComment}
+                        />
+                      </div>
+                    </section>
                   </div>
                 </div>
               </div>

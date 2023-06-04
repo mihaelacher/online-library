@@ -6,12 +6,7 @@ import EmojiPicker from "emoji-picker-react";
 
 import Comment from "./Comment";
 
-export const CommentSection = ({
-  bookId,
-  loading,
-  comments,
-  requestBookComment,
-}) => {
+export const CommentSection = ({ bookId, comments, requestBookComment }) => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const [commentText, setCommentText] = useState("");

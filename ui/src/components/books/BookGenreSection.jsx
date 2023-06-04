@@ -11,7 +11,7 @@ export const BookGenreSection = ({ books, loading }) => {
   const [genres, setGenres] = useState(null);
 
   useEffect(() => {
-    const booksByGenre = groupByGenre(books, 4);
+    const booksByGenre = groupByGenre(Object.values(books), 4);
     setBooksByGenre(booksByGenre);
     setGenres(Object.keys(booksByGenre));
   }, [books]);

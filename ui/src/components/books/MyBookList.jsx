@@ -16,7 +16,7 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
         ?.map(({ bookIds }) => bookIds)
         .flat();
       setRentedBooks(
-        books.filter((book) => {
+        Object.values(books).filter((book) => {
           return rentedBooks?.includes(book.id);
         })
       );

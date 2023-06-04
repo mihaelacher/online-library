@@ -16,7 +16,7 @@ export const PromoBookSection = ({ books, loggedUser, loading }) => {
     const following = loggedUser?.following;
     const promoBooksUsers = intersect(following, followers);
 
-    const promoBooks = books.filter((book) => {
+    const promoBooks = Object.values(books).filter((book) => {
       return promoBooksUsers.includes(book.provider);
     });
 

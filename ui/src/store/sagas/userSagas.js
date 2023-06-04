@@ -1,7 +1,7 @@
 import { all, call, put, takeEvery } from "redux-saga/effects";
 
 import * as userMutations from "../mutations/userMutations";
-import { fetchBooks } from "../mutations/bookMutations";
+import { fetchRatings } from "../mutations/ratingMutations";
 import { beginApiCall } from "../mutations/apiMutations";
 import * as api from "../api/userApi";
 
@@ -32,7 +32,7 @@ export function* fetchLoggedUserSaga(users, loggedUser) {
     const loggedUser = user.shift();
     yield put(userMutations.fetchLoggedUserSuccess(loggedUser));
   }
-  yield put(fetchBooks(loggedUser));
+  yield put(fetchRatings(loggedUser));
 }
 
 export function* followUserSaga(action) {

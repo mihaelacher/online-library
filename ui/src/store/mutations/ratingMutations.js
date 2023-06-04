@@ -5,8 +5,9 @@ export const REQUEST_BOOK_RATING = "REQUEST_BOOK_RATING";
 export const BOOK_RATING_SUCCESS = "BOOK_RATING_SUCCESS";
 export const BOOK_RATING_FAILED = "BOOK_RATING_FAILED";
 
-export const fetchRatings = () => ({
+export const fetchRatings = (loggedUser) => ({
   type: FETCH_RATINGS,
+  loggedUser,
 });
 
 export const fetchRatingsSuccess = (ratings) => ({

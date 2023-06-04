@@ -4,6 +4,7 @@ import * as bookMutations from "../mutations/bookMutations";
 import { beginApiCall } from "../mutations/apiMutations";
 import * as api from "../api/bookApi";
 import { intersect } from "../../utils/common/arrUtil";
+import { getBookRatings } from "../../utils/common/bookUtil";
 
 export function* watchBooksSagas() {
   yield all([
@@ -53,8 +54,11 @@ export function* bookDeleteSaga(action) {
 export function* fetchBooksSaga(action) {
   yield put(beginApiCall());
   try {
+    debugger;
     const loggedUser = yield select((state) => state.loggedUser) ??
       action.loggedUser;
+    const ratings = yield select((state) => state.ratings);
+    const ratingByBookId = getBookRatings(ratings);
     const data = yield call(api.fetchBooksApi);
     const followers = loggedUser?.followers;
     const following = loggedUser?.following;
@@ -62,11 +66,13 @@ export function* fetchBooksSaga(action) {
 
     yield put(
       bookMutations.fetchBooksSuccess(
-        data.map((book) =>
-          promoBooksUsers.includes(book.provider)
+        data.map((book) => {
+          book.rating = ratingByBookId[book._id.toString()]?.rating ?? 0;
+
+          return promoBooksUsers.includes(book.provider)
             ? { ...book, promoPrice: book.price / 2 }
-            : book
-        ),
+            : book;
+        }),
         loggedUser?.email
       )
     );

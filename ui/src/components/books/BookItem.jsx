@@ -3,6 +3,7 @@ import { useCart } from "react-use-cart";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import BookItemModal from "./BookItemModal";
+import BookRating from "../common/BookRating";
 import "./BookItem.css";
 
 export const BookItem = ({ book }) => {
@@ -28,6 +29,7 @@ export const BookItem = ({ book }) => {
             </button>
           )}
           <figcaption>
+            <BookRating rating={book.rating} />
             <h3>{book.title}</h3>
             <p>{book.author}</p>
             {book.promoPrice ? (

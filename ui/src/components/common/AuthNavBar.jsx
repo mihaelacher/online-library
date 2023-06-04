@@ -6,10 +6,10 @@ function AuthNavBar({ user, windowLocation, setWindowLocation }) {
   return (
     <>
       <li
-        className={`${windowLocation.endsWith("/chatbox") ? "active" : ""}`}
+        className={`${windowLocation.endsWith("/reels") ? "active" : ""}`}
         onClick={() => setWindowLocation(window.location.href)}
       >
-        <Link to={"/chatbox"}>
+        <Link to={"/reels"}>
           <FontAwesomeIcon
             className="nav-icon"
             icon="fa-solid fa-people-line"

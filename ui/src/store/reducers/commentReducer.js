@@ -4,7 +4,9 @@ import { initialState } from "../initialState";
 export const comments = (state = initialState.comments, action) => {
   switch (action.type) {
     case mutations.FETCH_COMMENTS_SUCCESS:
-      return action.comments;
+      return action.comments.sort(function (x, y) {
+        return x.timestamp - y.timestamp;
+      });
     case mutations.BOOK_COMMENT_SUCCESS:
       return [...state, action.comment];
     case mutations.BOOK_COMMENT_LIKE_SUCCESS:
