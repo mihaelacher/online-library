@@ -10,6 +10,27 @@ function AuthNavBar({ user, windowLocation, setWindowLocation }) {
         onClick={() => setWindowLocation(window.location.href)}
       >
         <Link to={"/chatbox"}>
+          <FontAwesomeIcon
+            className="nav-icon"
+            icon="fa-solid fa-people-line"
+          />
+          <span className="li-text">Актуално</span>
+        </Link>
+      </li>
+      <li
+        className={`${windowLocation.endsWith("/chatbox") ? "active" : ""}`}
+        onClick={() => setWindowLocation(window.location.href)}
+      >
+        <Link to={"/chatbox"}>
+          <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-heart" />
+          <span className="li-text">Любими</span>
+        </Link>
+      </li>
+      <li
+        className={`${windowLocation.endsWith("/chatbox") ? "active" : ""}`}
+        onClick={() => setWindowLocation(window.location.href)}
+      >
+        <Link to={"/chatbox"}>
           <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-comments" />
           <span className="li-text">Съобщения</span>
         </Link>

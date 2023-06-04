@@ -15,6 +15,15 @@ function MainNavBar({ windowLocation, setWindowLocation }) {
         </Link>
       </li>
       <li
+        className={`${windowLocation.endsWith("3000/") ? "active" : ""}`}
+        onClick={() => setWindowLocation(window.location.href)}
+      >
+        <Link to={"/"}>
+          <FontAwesomeIcon className="nav-icon" icon="fa-solid fa-list" />
+          <span className="li-text">Предложения</span>
+        </Link>
+      </li>
+      <li
         className={`${windowLocation.endsWith("/books") ? "active" : ""}`}
         onClick={() => setWindowLocation(window.location.href)}
       >

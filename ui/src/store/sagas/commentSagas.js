@@ -13,6 +13,14 @@ export function* watchCommentsSagas() {
       commentMutations.REQUEST_BOOK_COMMENT_DISLIKE,
       dislikeBookCommentSaga
     ),
+    takeEvery(
+      commentMutations.REQUEST_BOOK_COMMENT_UNLIKE,
+      unlikeBookCommentSaga
+    ),
+    takeEvery(
+      commentMutations.REQUEST_BOOK_COMMENT_UNDISLIKE,
+      undislikeBookCommentSaga
+    ),
   ]);
 }
 
@@ -29,7 +37,6 @@ export function* fetchCommentsSaga() {
 
 export function* bookCommentSaga(action) {
   const { username, bookId, commentText, token } = action;
-  yield put(beginApiCall());
   try {
     const timestamp = new Date();
     yield call(
@@ -55,7 +62,6 @@ export function* bookCommentSaga(action) {
 
 export function* likeBookCommentSaga(action) {
   const { username, commentId, token } = action;
-  yield put(beginApiCall());
   try {
     yield call(api.likeCommentApi, username, commentId, token);
     yield put(commentMutations.bookCommentLikeSuccess(commentId, username));
@@ -64,13 +70,34 @@ export function* likeBookCommentSaga(action) {
   }
 }
 
+export function* unlikeBookCommentSaga(action) {
+  const { username, commentId, token } = action;
+  try {
+    yield call(api.unlikeCommentApi, username, commentId, token);
+    yield put(commentMutations.bookCommentUnlikeSuccess(commentId, username));
+  } catch (error) {
+    yield put(commentMutations.bookCommentUnlikeFailed(error.message));
+  }
+}
+
 export function* dislikeBookCommentSaga(action) {
   const { username, commentId, token } = action;
-  yield put(beginApiCall());
   try {
     yield call(api.dislikeCommentApi, username, commentId, token);
     yield put(commentMutations.bookCommentDislikeSuccess(commentId, username));
   } catch (error) {
     yield put(commentMutations.bookCommentDislikeFailed(error.message));
+  }
+}
+
+export function* undislikeBookCommentSaga(action) {
+  const { username, commentId, token } = action;
+  try {
+    yield call(api.undislikeCommentApi, username, commentId, token);
+    yield put(
+      commentMutations.bookCommentUndislikeSuccess(commentId, username)
+    );
+  } catch (error) {
+    yield put(commentMutations.bookCommentUndislikeFailed(error.message));
   }
 }

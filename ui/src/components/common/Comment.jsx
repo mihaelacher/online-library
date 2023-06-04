@@ -7,6 +7,8 @@ import { getTimeDifference } from "../../utils/common/timeUtil";
 import {
   requestBookCommentLike,
   requestBookCommentDislike,
+  requestBookCommentUnlike,
+  requestBookCommentUndislike,
 } from "../../store/mutations/commentMutations";
 
 export const Comment = ({
@@ -15,52 +17,75 @@ export const Comment = ({
   pic,
   requestBookCommentDislike,
   requestBookCommentLike,
+  requestBookCommentUnlike,
+  requestBookCommentUndislike,
 }) => {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-  const likeComment = async () => {
+  const likeComment = async (e) => {
+    e.stopPropagation();
     const token = await getAccessTokenSilently();
-    requestBookCommentLike(commentId, user.nickname, token);
+    if (comment.likes.includes(user.nickname)) {
+      requestBookCommentUnlike(commentId, user.nickname, token);
+    } else {
+      requestBookCommentLike(commentId, user.nickname, token);
+    }
   };
 
-  const disLikeComment = async () => {
+  const disLikeComment = async (e) => {
+    e.stopPropagation();
     const token = await getAccessTokenSilently();
-    requestBookCommentDislike(commentId, user.nickname, token);
+    if (!comment.dislikes.includes(user.nickname)) {
+      requestBookCommentDislike(commentId, user.nickname, token);
+    } else {
+      requestBookCommentUndislike(commentId, user.nickname, token);
+    }
   };
 
   return (
     <>
-      <div class="d-flex flex-row align-items-center commented-user">
-        <img
-          class="img-fluid img-responsive rounded-circle mr-2"
-          src={pic}
-          width="38"
-          alt="userpic"
-        />
-        <h5 class="mr-2">{comment?.username}</h5>
-        <span style={{ marginLeft: "5px" }}>
-          {getTimeDifference(comment?.timestamp)}
-        </span>
-      </div>
-      <div class="comment-text-sm">
-        <span>{comment?.comment}</span>
-      </div>
-      <div class="reply-section">
-        <div class="d-flex flex-row align-items-center">
-          <FontAwesomeIcon
-            onClick={likeComment}
-            icon="fa-solid fa-heart"
-            style={{ marginLeft: "10px", cursor: "pointer" }}
+      <div style={{ marginBottom: "20px" }}>
+        <div class="d-flex flex-row align-items-center commented-user">
+          <img
+            class="img-fluid img-responsive rounded-circle mr-2"
+            src={pic}
+            width="38"
+            alt="userpic"
           />
-          <FontAwesomeIcon
-            onClick={disLikeComment}
-            icon="fa-solid fa-heart-crack"
-            style={{ marginLeft: "10px", cursor: "pointer" }}
-          />
-          <span style={{ marginLeft: "10px" }}>
-            {comment?.likes?.length - comment?.dislikes?.length ?? 0} харесвания
+          <h5 class="mr-2">{comment?.username}</h5>
+          <span style={{ marginLeft: "5px" }}>
+            {getTimeDifference(comment?.timestamp)}
           </span>
-          <h6 style={{ marginLeft: "15px", cursor: "pointer" }}>Коментирай</h6>
+        </div>
+        <div class="comment-text-sm">
+          <span>{comment?.comment}</span>
+        </div>
+        <div class="reply-section">
+          <div class="d-flex flex-row align-items-center">
+            {isAuthenticated && (
+              <>
+                <FontAwesomeIcon
+                  onClick={likeComment}
+                  icon="fa-solid fa-heart"
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                />
+                <FontAwesomeIcon
+                  onClick={disLikeComment}
+                  icon="fa-solid fa-heart-crack"
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                />
+              </>
+            )}
+            <span style={{ marginLeft: "10px" }}>
+              {comment?.likes?.length - comment?.dislikes?.length ?? 0}{" "}
+              харесвания
+            </span>
+            {isAuthenticated && (
+              <h6 style={{ marginLeft: "15px", cursor: "pointer" }}>
+                Коментирай
+              </h6>
+            )}
+          </div>
         </div>
       </div>
     </>
@@ -68,16 +93,23 @@ export const Comment = ({
 };
 
 function mapStateToProps(state, ownProps) {
+  const { comments, users } = state;
+  const { commentId } = ownProps;
+
+  const comment = comments.find((comment) => comment._id === commentId);
+  const pic = users[comment.username]?.pic || "";
+
   return {
-    comment: state.comments.find(function (comment) {
-      return comment._id === ownProps.commentId;
-    }),
+    comment,
+    pic,
   };
 }
 
 const mapDispatchToProps = {
   requestBookCommentLike,
   requestBookCommentDislike,
+  requestBookCommentUnlike,
+  requestBookCommentUndislike,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comment);

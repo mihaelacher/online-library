@@ -50,6 +50,14 @@ function SideBar() {
       onMouseLeave={mouseLeave}
     >
       <div className="side-inner">
+        <div class="company-brand">
+          <img
+            style={{ marginBottom: "20px" }}
+            src="/images/logo_transparent.png"
+            alt="logo"
+            class="footer-logo"
+          />
+        </div>
         <div className="nav-menu">
           <ul>
             <MainNavBar

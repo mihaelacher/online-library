@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import HomeLayout from "../layouts/HomeLayout";
 import BookItemForm from "../components/books/BookItemForm";
 import { ConnectedBookList } from "../components/books/BookList";
-import MyBookList from "../components/books/MyBookList";
 import HomePage from "../components/home/HomePage";
 import ChatComponent from "../components/talk/ChatComponent";
 
@@ -13,7 +12,6 @@ const HomeRoutes = (
     <Route path="/book/:id" element={<BookItemForm />} />
     <Route path="/book" element={<BookItemForm />} />
     <Route path="/books" element={<ConnectedBookList />} />
-    <Route path="/mybooks" element={<MyBookList />} />
     <Route path="/chatbox" element={<ChatComponent />} />
   </Route>
 );

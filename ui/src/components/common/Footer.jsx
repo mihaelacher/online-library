@@ -31,9 +31,6 @@ const Footer = () => {
                   <li className="menu-item">
                     <Link to="/books">Търси книги </Link>
                   </li>
-                  <li className="menu-item">
-                    {isAuthenticated && <a href="/mybooks">Моите книги</a>}
-                  </li>
                 </ul>
               </div>
             </div>

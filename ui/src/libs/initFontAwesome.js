@@ -15,6 +15,13 @@ import {
   faPaperPlane,
   faHeart,
   faHeartCrack,
+  faCartArrowDown,
+  faPersonChalkboard,
+  faFilePen,
+  faPersonCirclePlus,
+  faPersonCircleMinus,
+  faList,
+  faPeopleLine,
 } from "@fortawesome/free-solid-svg-icons";
 
 function initFontAwesome() {
@@ -33,7 +40,14 @@ function initFontAwesome() {
     faUserGroup,
     faPaperPlane,
     faHeart,
-    faHeartCrack
+    faHeartCrack,
+    faCartArrowDown,
+    faPersonChalkboard,
+    faFilePen,
+    faPersonCirclePlus,
+    faPersonCircleMinus,
+    faList,
+    faPeopleLine
   );
 }
 

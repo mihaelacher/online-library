@@ -7,9 +7,15 @@ export const BOOK_COMMENT_FAILED = "BOOK_COMMENT_FAILED";
 export const REQUEST_BOOK_COMMENT_LIKE = "REQUEST_BOOK_COMMENT_LIKE";
 export const BOOK_COMMENT_LIKE_SUCCESS = "BOOK_COMMENT_LIKE_SUCCESS";
 export const BOOK_COMMENT_LIKE_FAILED = "BOOK_COMMENT_LIKE_FAILED";
+export const REQUEST_BOOK_COMMENT_UNLIKE = "REQUEST_BOOK_COMMENT_UNLIKE";
+export const BOOK_COMMENT_UNLIKE_SUCCESS = "BOOK_COMMENT_UNLIKE_SUCCESS";
+export const BOOK_COMMENT_UNLIKE_FAILED = "BOOK_COMMENT_UNLIKE_FAILED";
 export const REQUEST_BOOK_COMMENT_DISLIKE = "REQUEST_BOOK_COMMENT_DISLIKE";
 export const BOOK_COMMENT_DISLIKE_SUCCESS = "BOOK_COMMENT_DISLIKE_SUCCESS";
 export const BOOK_COMMENT_DISLIKE_FAILED = "BOOK_COMMENT_DISLIKE_FAILED";
+export const REQUEST_BOOK_COMMENT_UNDISLIKE = "REQUEST_BOOK_COMMENT_UNDISLIKE";
+export const BOOK_COMMENT_UNDISLIKE_SUCCESS = "BOOK_COMMENT_UNDISLIKE_SUCCESS";
+export const BOOK_COMMENT_UNDISLIKE_FAILED = "BOOK_COMMENT_UNDISLIKE_FAILED";
 
 export const fetchComments = () => ({
   type: FETCH_COMMENTS,
@@ -69,6 +75,24 @@ export const bookCommentLikeFailed = (error) => ({
   error,
 });
 
+export const requestBookCommentUnlike = (commentId, username, token) => ({
+  type: REQUEST_BOOK_COMMENT_UNLIKE,
+  commentId,
+  username,
+  token,
+});
+
+export const bookCommentUnlikeSuccess = (commentId, username) => ({
+  type: BOOK_COMMENT_UNLIKE_SUCCESS,
+  commentId,
+  username,
+});
+
+export const bookCommentUnlikeFailed = (error) => ({
+  type: BOOK_COMMENT_UNLIKE_FAILED,
+  error,
+});
+
 export const requestBookCommentDislike = (commentId, username, token) => ({
   type: REQUEST_BOOK_COMMENT_DISLIKE,
   commentId,
@@ -84,5 +108,23 @@ export const bookCommentDislikeSuccess = (commentId, username) => ({
 
 export const bookCommentDislikeFailed = (error) => ({
   type: BOOK_COMMENT_DISLIKE_FAILED,
+  error,
+});
+
+export const requestBookCommentUndislike = (commentId, username, token) => ({
+  type: REQUEST_BOOK_COMMENT_UNDISLIKE,
+  commentId,
+  username,
+  token,
+});
+
+export const bookCommentUndislikeSuccess = (commentId, username) => ({
+  type: BOOK_COMMENT_UNDISLIKE_SUCCESS,
+  commentId,
+  username,
+});
+
+export const bookCommentUndislikeFailed = (error) => ({
+  type: BOOK_COMMENT_UNDISLIKE_FAILED,
   error,
 });

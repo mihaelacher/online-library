@@ -16,7 +16,29 @@ export const comments = (state = initialState.comments, action) => {
     case mutations.BOOK_COMMENT_DISLIKE_SUCCESS:
       return state.map((comment) =>
         comment._id === action.commentId
-          ? { ...comment, likes: [...comment.dislikes, action.username] }
+          ? { ...comment, dislikes: [...comment.dislikes, action.username] }
+          : comment
+      );
+    case mutations.BOOK_COMMENT_UNLIKE_SUCCESS:
+      return state.map((comment) =>
+        comment._id === action.commentId
+          ? {
+              ...comment,
+              likes: comment.likes.filter(
+                (username) => username !== action.username
+              ),
+            }
+          : comment
+      );
+    case mutations.BOOK_COMMENT_UNDISLIKE_SUCCESS:
+      return state.map((comment) =>
+        comment._id === action.commentId
+          ? {
+              ...comment,
+              dislikes: comment.likes.filter(
+                (username) => username !== action.username
+              ),
+            }
           : comment
       );
     default:

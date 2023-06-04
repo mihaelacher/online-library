@@ -3210,7 +3210,6 @@ main {
 }
 
 .sidebar .side-inner {
-  padding: 30px 0;
   height: 100vh;
   -webkit-overflow-scrolling: touch;
 }
@@ -3342,4 +3341,8 @@ main .post-content .post-meta {
 
 .textarea {
   resize: none;
+}
+
+.hidden {
+  display: none;
 }

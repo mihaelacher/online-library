@@ -120,11 +120,14 @@ const ProfileCard = ({
           >
             {isFollowing() ? (
               <FontAwesomeIcon
-                style={{ color: "#f4132d", width: "1em" }}
-                icon="fa-solid fa-user-group"
+                style={{ width: "1em" }}
+                icon="fa-solid fa-person-circle-minus"
               />
             ) : (
-              <FontAwesomeIcon icon="fa-solid fa-user-group" />
+              <FontAwesomeIcon
+                style={{ width: "2em" }}
+                icon="fa-solid fa-person-circle-plus"
+              />
             )}
           </button>
         )}
@@ -135,7 +138,7 @@ const ProfileCard = ({
 
 function mapStateToProps(state, ownProps) {
   return {
-    profileUser: state.users.find(
+    profileUser: Object.values(state.users).find(
       (user) => user.username === ownProps.username
     ),
     loggedUser: state.loggedUser,

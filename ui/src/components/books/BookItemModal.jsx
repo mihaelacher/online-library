@@ -3,36 +3,59 @@ import ReactModal from "react-modal";
 import { connect } from "react-redux";
 import { useCart } from "react-use-cart";
 import { useAuth0 } from "@auth0/auth0-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Typography from "@mui/material/Typography";
 
 import ProfileCardModal from "../auth/ProfileCardModal";
 import CommentSection from "../common/CommentSection";
 import { requestBookComment } from "../../store/mutations/commentMutations";
+import { requestBookRating } from "../../store/mutations/ratingMutations";
 import "./BookItemModal.css";
+
+const StyledRating = styled(Rating)({
+  "& .MuiRating-iconFilled": {
+    color: "#ff6d75",
+  },
+  "& .MuiRating-iconHover": {
+    color: "#ff3d47",
+  },
+});
 
 const BookItemModal = ({
   book,
   isOpen,
   setIsOpen,
   comments,
-  users,
+  bookRatings,
   loading,
   requestBookComment,
+  requestBookRating,
 }) => {
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [bookComments, setBookComments] = useState([]);
+  const [bookRating, setBookRating] = useState(0);
   const { addItem } = useCart();
 
   useEffect(() => {
-    if (isOpen) {
-      setBookComments(
-        comments?.filter((element) => {
-          console.log(element.bookId === book._id);
-          return element.bookId === book._id;
-        })
+    if (bookRatings) {
+      setBookRating(
+        bookRatings?.reduce(function (sum, el) {
+          return sum + el["value"];
+        }, 0) / bookRatings?.length
       );
     }
-  }, [isOpen]);
+  }, [bookRatings]);
+
+  const handleRating = async (event, value) => {
+    event.preventDefault();
+    const token = await getAccessTokenSilently();
+    requestBookRating(user.nickname, book._id, value, token);
+  };
 
   return (
     <>
@@ -48,6 +71,25 @@ const BookItemModal = ({
               <img className="product-image" src={book.cover_url} alt="book" />
             </div>
             <div className="col-md-6">
+              <Box
+                sx={{
+                  "& > legend": { mt: 2 },
+                }}
+              >
+                <Typography component="legend">Рейтинг</Typography>
+                <StyledRating
+                  name="customized-color"
+                  defaultValue={bookRating}
+                  getLabelText={(value) =>
+                    `${value} Heart${value !== 1 ? "s" : ""}`
+                  }
+                  precision={0.5}
+                  icon={<FavoriteIcon fontSize="inherit" />}
+                  emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                  onChange={handleRating}
+                  readOnly={isAuthenticated ? false : true}
+                />
+              </Box>
               <div className="product-detail">
                 <h1 className="text-center">{book.title}</h1>
                 <p>{book.author}</p>
@@ -101,32 +143,40 @@ const BookItemModal = ({
                         <span className="price colored">{book.price}лв.</span>
                       )}
                       <p> {book.description} </p>
-                      {!isAuthenticated || user?.nickname !== book.provider ? (
-                        <>
-                          <button
-                            name="add-to-cart"
-                            className="button"
-                            onClick={() => addItem(book)}
-                          >
-                            Добави в количка
-                          </button>
-                          <button
-                            style={{ marginLeft: "30px" }}
-                            className="button"
+                      <div className="button-set">
+                        {!isAuthenticated ||
+                        user?.nickname !== book.provider ? (
+                          <>
+                            <button
+                              type="button"
+                              className="btn btn-outline-light"
+                              onClick={() => addItem(book)}
+                              style={{ marginRight: "10px" }}
+                            >
+                              <FontAwesomeIcon
+                                style={{ width: "2em" }}
+                                icon="fa-solid fa-cart-arrow-down"
+                              />
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-outline-light"
+                              onClick={() => setIsProfileOpen(true)}
+                            >
+                              <FontAwesomeIcon
+                                style={{ width: "2em" }}
+                                icon="fa-solid fa-person-chalkboard"
+                              />
+                            </button>
+                          </>
+                        ) : (
+                          <FontAwesomeIcon
+                            className="icon-button"
                             onClick={() => setIsProfileOpen(true)}
-                          >
-                            Публикувал
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          style={{ marginLeft: "30px" }}
-                          className="button"
-                          onClick={() => setIsProfileOpen(true)}
-                        >
-                          Редактирай
-                        </button>
-                      )}
+                            icon="fa-solid fa-file-pen"
+                          />
+                        )}
+                      </div>
                     </div>
                     <div
                       className="tab-pane fade scrollable-div"
@@ -139,8 +189,7 @@ const BookItemModal = ({
                           <CommentSection
                             bookId={book._id}
                             loading={loading}
-                            comments={bookComments}
-                            users={users}
+                            comments={comments}
                             requestBookComment={requestBookComment}
                           />
                         </div>
@@ -162,16 +211,21 @@ const BookItemModal = ({
   );
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    users: state.users,
-    comments: state.comments,
+    comments: state.comments.filter((element) => {
+      return element?.bookId === ownProps.book._id;
+    }),
     loading: state.apiCallsInProgress > 0,
+    bookRatings: state.ratings.filter(
+      (rating) => rating?.bookId === ownProps.book.id
+    ),
   };
 }
 
 const mapDispatchToProps = {
   requestBookComment,
+  requestBookRating,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookItemModal);

@@ -5,6 +5,7 @@ import { users } from "./usersReducer";
 import { loggedUser } from "./loggedUserReducer";
 import { searchBooks } from "./searchBookReducer";
 import { comments } from "./commentReducer";
+import { ratings } from "./ratingReducer";
 import { apiCallsInProgress } from "./apiStatusReducer";
 import { errors } from "./errorsReducer";
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   loggedUser,
   searchBooks,
   comments,
+  ratings,
   apiCallsInProgress,
   errors,
 });

@@ -6,6 +6,7 @@ export const initialState = {
   rentedBooks: [],
   users: [],
   comments: [],
+  ratings: [],
   apiCallsInProgress: 0,
   errors: {},
 };

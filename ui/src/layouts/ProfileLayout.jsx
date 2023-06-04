@@ -7,11 +7,15 @@ import SideBar from "../components/common/SideBar";
 import Footer from "../components/common/Footer";
 import { store } from "../store/index";
 import { fetchUsers } from "../store/mutations/userMutations";
+import { fetchRatings } from "../store/mutations/ratingMutations";
+import { fetchComments } from "../store/mutations/commentMutations";
 
 function ProfileLayout() {
   const { user } = useAuth0();
   useEffect(() => {
     store.dispatch(fetchUsers(user));
+    store.dispatch(fetchComments());
+    store.dispatch(fetchRatings());
   }, [user]);
 
   return (

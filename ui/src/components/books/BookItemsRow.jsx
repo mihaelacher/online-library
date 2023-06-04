@@ -1,7 +1,6 @@
 import React from "react";
 
 import BookItem from "./BookItem";
-import "./BookItemsRow.css";
 
 function BookItemsRow({ books, isActive }) {
   return (
