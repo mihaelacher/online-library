@@ -66,6 +66,33 @@ commentRouter.post("/like/:commentId", async (req, res) => {
   }
 });
 
+commentRouter.post("/unlike/:commentId", async (req, res) => {
+  try {
+    const username = req.body.username;
+    const commentId = req.params.commentId;
+    const dbClient = new MongoClient(db.mongoDB.connectionString);
+    const database = dbClient.db(db.mongoDB.dbName);
+    const comments = database.collection(db.mongoDB.commentsCollection);
+
+    comments
+      .updateOne(
+        { _id: new ObjectId(commentId) },
+        {
+          $pull: { likes: username },
+        }
+      )
+      .catch((err) => {
+        console.log(err); //debug
+        return res.status(500).send("Internal Server Error");
+      });
+
+    return res.status(200).send("OK");
+  } catch (err) {
+    console.log(err); //debug
+    return res.status(500).send("Internal server error");
+  }
+});
+
 commentRouter.post("/dislike/:commentId", async (req, res) => {
   try {
     const username = req.body.username;
@@ -79,6 +106,33 @@ commentRouter.post("/dislike/:commentId", async (req, res) => {
         { _id: new ObjectId(commentId) },
         {
           $push: { dislikes: username },
+        }
+      )
+      .catch((err) => {
+        console.log(err); //debug
+        return res.status(500).send("Internal Server Error");
+      });
+
+    return res.status(200).send("OK");
+  } catch (err) {
+    console.log(err); //debug
+    return res.status(500).send("Internal server error");
+  }
+});
+
+commentRouter.post("/undislike/:commentId", async (req, res) => {
+  try {
+    const username = req.body.username;
+    const commentId = req.params.commentId;
+    const dbClient = new MongoClient(db.mongoDB.connectionString);
+    const database = dbClient.db(db.mongoDB.dbName);
+    const comments = database.collection(db.mongoDB.commentsCollection);
+
+    comments
+      .updateOne(
+        { _id: new ObjectId(commentId) },
+        {
+          $pull: { dislikes: username },
         }
       )
       .catch((err) => {

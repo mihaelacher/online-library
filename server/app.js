@@ -8,6 +8,8 @@ import { orderRouter } from "./routes/order.js";
 import { userRouter } from "./routes/user.js";
 import { commentRouter } from "./routes/comment.js";
 import { commentsRouter } from "./routes/comments.js";
+import { ratingRouter } from "./routes/rating.js";
+import { ratingsRouter } from "./routes/ratings.js";
 
 var app = express();
 
@@ -27,6 +29,8 @@ app.use("/user", userRouter);
 app.use("/order", orderRouter);
 app.use("/comment", commentRouter);
 app.use("/comments", commentsRouter);
+app.use("/rating", ratingRouter);
+app.use("/ratings", ratingsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
