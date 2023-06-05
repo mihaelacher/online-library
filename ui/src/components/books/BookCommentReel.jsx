@@ -11,11 +11,11 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import BookRating from "../common/BookRating";
 import CommentSection from "../common/CommentSection";
+import BookFavoriteIcon from "../common/BookFavoriteIcon";
 import BookItemModal from "./BookItemModal";
 import { getTimeDifference } from "../../utils/common/timeUtil";
 
@@ -44,6 +44,7 @@ export const BookCommentReel = ({
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
   return (
     <Card
       sx={{ maxWidth: 700 }}
@@ -82,12 +83,7 @@ export const BookCommentReel = ({
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        {/* <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton> */}
+        <BookFavoriteIcon bookId={comment.bookId} />
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

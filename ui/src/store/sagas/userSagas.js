@@ -11,6 +11,8 @@ export function* watchUsersSagas() {
     takeEvery(userMutations.REQUEST_FOLLOW_USER, followUserSaga),
     takeEvery(userMutations.REQUEST_UNFOLLOW_USER, unfollowUserSaga),
     takeEvery(userMutations.FETCH_LOGGED_USER, fetchLoggedUserSaga),
+    takeEvery(userMutations.REQUEST_ADD_TO_FAVORITES, addToFavorites),
+    takeEvery(userMutations.REQUEST_REMOVE_FROM_FAVORITES, removeFromFavorites),
   ]);
 }
 
@@ -54,5 +56,25 @@ export function* unfollowUserSaga(action) {
     yield put(userMutations.unfollowUserSuccess(follower, following));
   } catch (error) {
     yield put(userMutations.unfollowUserFailed(error.message));
+  }
+}
+
+export function* addToFavorites(action) {
+  const { username, bookId, token } = action;
+  try {
+    yield call(api.addToFavoritesApi, username, bookId, token);
+    yield put(userMutations.addToFavoritesSuccess(bookId));
+  } catch (error) {
+    yield put(userMutations.addToFavoritesFailed(error.message));
+  }
+}
+
+export function* removeFromFavorites(action) {
+  const { username, bookId, token } = action;
+  try {
+    yield call(api.removeFromFavoritesApi, username, bookId, token);
+    yield put(userMutations.removeFromFavoritesSuccess(bookId));
+  } catch (error) {
+    yield put(userMutations.removeFromFavoritesFailed(error.message));
   }
 }

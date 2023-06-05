@@ -54,7 +54,6 @@ export function* bookDeleteSaga(action) {
 export function* fetchBooksSaga(action) {
   yield put(beginApiCall());
   try {
-    debugger;
     const loggedUser = yield select((state) => state.loggedUser) ??
       action.loggedUser;
     const ratings = yield select((state) => state.ratings);

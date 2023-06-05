@@ -45,3 +45,37 @@ export const unfollowUserApi = async (follower, following, token) => {
     throw new Error(error);
   }
 };
+
+export const addToFavoritesApi = async (username, bookId, token) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/user/addToFavorites/${bookId}`,
+      { username: username },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const removeFromFavoritesApi = async (username, bookId, token) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/user/removeFromFavorites/${bookId}`,
+      { username: username },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

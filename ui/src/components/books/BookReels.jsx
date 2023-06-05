@@ -69,4 +69,4 @@ const mapDispatchToProps = {
   requestBookComment,
 };
 
-export default connect(mapStateToProps)(BookReels);
+export default connect(mapStateToProps, mapDispatchToProps)(BookReels);

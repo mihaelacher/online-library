@@ -86,4 +86,58 @@ userRouter.post("/unfollow/:username", async (req, res) => {
   }
 });
 
+userRouter.post("/addToFavorites/:bookId", async (req, res) => {
+  try {
+    const bookId = req.params.bookId;
+    const username = req.body.username;
+    const dbClient = new MongoClient(db.mongoDB.connectionString);
+    const database = dbClient.db(db.mongoDB.dbName);
+    const users = database.collection(db.mongoDB.usersCollection);
+
+    users
+      .updateOne(
+        { username: username },
+        {
+          $push: { favorites: bookId },
+        }
+      )
+      .catch((err) => {
+        console.log(err); //debug
+        return res.status(500).send("Internal Server Error");
+      });
+
+    return res.status(200).send("OK");
+  } catch (err) {
+    console.log(err); //debug
+    return res.status(500).send("Internal server error");
+  }
+});
+
+userRouter.post("/removeFromFavorites/:bookId", async (req, res) => {
+  try {
+    const bookId = req.params.bookId;
+    const username = req.body.username;
+    const dbClient = new MongoClient(db.mongoDB.connectionString);
+    const database = dbClient.db(db.mongoDB.dbName);
+    const users = database.collection(db.mongoDB.usersCollection);
+
+    users
+      .updateOne(
+        { username: username },
+        {
+          $pull: { favorites: bookId },
+        }
+      )
+      .catch((err) => {
+        console.log(err); //debug
+        return res.status(500).send("Internal Server Error");
+      });
+
+    return res.status(200).send("OK");
+  } catch (err) {
+    console.log(err); //debug
+    return res.status(500).send("Internal server error");
+  }
+});
+
 export { userRouter };
