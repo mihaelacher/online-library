@@ -93,7 +93,7 @@ userRouter.post("/addToFavorites/:bookId", async (req, res) => {
     const dbClient = new MongoClient(db.mongoDB.connectionString);
     const database = dbClient.db(db.mongoDB.dbName);
     const users = database.collection(db.mongoDB.usersCollection);
-
+    console.log(bookId, username);
     users
       .updateOne(
         { username: username },

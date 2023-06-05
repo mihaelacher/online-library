@@ -82,7 +82,7 @@ export const BookRatingReel = ({ rating, books, users }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <BookFavoriteIcon />
+        <BookFavoriteIcon bookId={rating.bookId} />
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

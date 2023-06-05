@@ -21,13 +21,13 @@ export const BookFavoriteIcon = ({
 
   useEffect(() => {
     if (loggedUser) {
-      console.log(bookId, loggedUser?.favorites?.includes(bookId));
       setIsFavorite(loggedUser?.favorites?.includes(bookId));
     }
   }, [loggedUser, bookId]);
 
   const handleFavoritesClick = async () => {
     const token = await getAccessTokenSilently();
+    console.log(bookId);
     if (isFavorite) {
       requestRemoveFromFavorites(loggedUser.username, bookId, token);
       setIsFavorite(false);

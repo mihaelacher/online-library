@@ -11,6 +11,7 @@ import BookRating from "../common/BookRating";
 import { requestBookComment } from "../../store/mutations/commentMutations";
 import { requestBookRating } from "../../store/mutations/ratingMutations";
 import "./BookItemModal.css";
+import BookFavoriteIcon from "../common/BookFavoriteIcon";
 
 const BookItemModal = ({
   book,
@@ -71,7 +72,9 @@ const BookItemModal = ({
             />
             <div className="product-detail">
               <h1 className="text-center">{book.title}</h1>
-              <p>{book.author}</p>
+              <p>
+                {book.author} <BookFavoriteIcon bookId={book.id} />
+              </p>
               <div className="bootstrap-tabs">
                 <nav>
                   <div className="nav nav-tabs" id="nav-tab" role="tablist">

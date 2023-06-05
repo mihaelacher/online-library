@@ -18,8 +18,8 @@ function Header() {
               <nav id="navbar">
                 <div className="main-menu stellarnav">
                   <ul className="menu-list">
-                    <AuthenticationButton />
                     <CartButton />
+                    <AuthenticationButton />
                   </ul>
                 </div>
               </nav>

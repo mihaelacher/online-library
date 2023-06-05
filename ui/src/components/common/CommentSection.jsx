@@ -96,7 +96,9 @@ export const CommentSection = ({ bookId, comments, requestBookComment }) => {
       )}
       <div className="commented-section mt-2">
         {comments?.map(function (comment, i) {
-          return <Comment commentId={comment._id} />;
+          return (
+            comment.bookId == bookId && <Comment commentId={comment._id} />
+          );
         })}
       </div>
     </div>
