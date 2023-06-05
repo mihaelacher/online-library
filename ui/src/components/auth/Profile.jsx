@@ -12,7 +12,7 @@ const Profile = ({ loggedUser, books, loading }) => {
 
   useEffect(() => {
     if (loggedUser) {
-      const providedBooks = books?.filter(
+      const providedBooks = Object.values(books)?.filter(
         (book) => book.provider === loggedUser?.username
       );
       setProvidedBooksCount(providedBooks?.length);

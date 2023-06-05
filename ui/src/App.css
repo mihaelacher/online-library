@@ -3184,8 +3184,9 @@ main {
 }
 
 .sidebar {
-  width: 6%;
+  width: 3%;
   left: 0;
+  cursor: pointer;
   z-index: 1001;
   position: fixed;
   -webkit-transform: translateX(-100%);
@@ -3325,7 +3326,7 @@ main .post-content .post-meta {
 }
 
 .home-layout {
-  width: 95%;
+  width: 98%;
   float: right;
 }
 

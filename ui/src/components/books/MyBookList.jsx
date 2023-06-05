@@ -22,7 +22,9 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
       );
 
       setProvidedBooks(
-        books?.filter((book) => book.provider === loggedUser?.username)
+        Object.values(books).filter(
+          (book) => book.provider === loggedUser?.username
+        )
       );
     }
   }, [loggedUser, books]);

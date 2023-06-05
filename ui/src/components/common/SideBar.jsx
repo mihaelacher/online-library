@@ -1,81 +1,115 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import Box from "@mui/material/Box";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import Avatar from "@mui/material/Avatar";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import AssistantRoundedIcon from "@mui/icons-material/AssistantRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import NewspaperRoundedIcon from "@mui/icons-material/NewspaperRounded";
+import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
 
-import MainNavBar from "./MainNavBar";
-import AuthNavBar from "./AuthNavBar";
-import "./Header.css";
+import SideBarListItem from "./SideBarListItem";
 
-function SideBar() {
+const SideBar = () => {
   const { isAuthenticated, user } = useAuth0();
-  const [windowLocation, setWindowLocation] = useState("/");
-  const [isMouseInside, _setIsMouseInside] = useState(false);
-
-  useEffect(() => {
-    setWindowLocation(window.location.href);
-  }, [window.location.href]);
-
-  const mouseEnter = () => {
-    setIsMouseInside(true);
-  };
-  const mouseLeave = () => {
-    setIsMouseInside(false);
-  };
-
-  const setIsMouseInside = (isMouseInsideValue) => {
-    const navText = document.querySelectorAll(".li-text");
-    const sideBar = document.getElementById("sidebar");
-    const homeLayout = document.getElementById("home-layout");
-
-    if (!isMouseInsideValue) {
-      navText.forEach((element) => {
-        element.style.display = "none";
-      });
-      sideBar.style.width = "6%";
-      homeLayout.style.width = "94%";
-    } else {
-      navText.forEach((element) => {
-        element.style.display = "inline";
-      });
-      sideBar.style.width = "15%";
-      homeLayout.style.width = "85%";
+  const [state, setState] = useState(false);
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
     }
-    _setIsMouseInside(isMouseInsideValue);
+
+    setState(open);
   };
 
   return (
-    <aside
-      id="sidebar"
-      className="sidebar"
-      onMouseEnter={mouseEnter}
-      onMouseLeave={mouseLeave}
-    >
-      <div className="side-inner">
-        <div class="company-brand">
+    <>
+      <aside className="sidebar" onClick={toggleDrawer(true)}></aside>
+      <SwipeableDrawer
+        anchor="left"
+        open={state}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+      >
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
           <img
             style={{ marginBottom: "20px" }}
             src="/images/logo_transparent.png"
             alt="logo"
             class="footer-logo"
           />
-        </div>
-        <div className="nav-menu">
-          <ul>
-            <MainNavBar
-              windowLocation={windowLocation}
-              setWindowLocation={setWindowLocation}
+          <List>
+            <SideBarListItem
+              key="home"
+              text="Начало"
+              icon={<HomeRoundedIcon />}
+              link="/"
+            />
+            <SideBarListItem
+              key="suggestions"
+              text="Предложения"
+              icon={<AssistantRoundedIcon />}
+              link="/books"
+            />
+            <SideBarListItem
+              key="search"
+              text="Търси"
+              icon={<SearchRoundedIcon />}
+              link="/books"
             />
             {isAuthenticated && (
-              <AuthNavBar
-                user={user}
-                windowLocation={windowLocation}
-                setWindowLocation={setWindowLocation}
-              />
+              <>
+                <Divider />
+                <SideBarListItem
+                  key="newsfeed"
+                  text="Актуално"
+                  icon={<NewspaperRoundedIcon />}
+                  link="/reels"
+                />
+                <SideBarListItem
+                  key="fav"
+                  text="Любими"
+                  icon={<FavoriteBorderRoundedIcon />}
+                  link="/favorites"
+                />
+                <SideBarListItem
+                  key="chat"
+                  text="Съобщения"
+                  icon={<SendRoundedIcon />}
+                  link="/chatbox"
+                />
+                <Divider />
+                <SideBarListItem
+                  key="profile"
+                  text="Профил"
+                  icon={
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={user.picture}
+                      sx={{ width: 24, height: 24 }}
+                    />
+                  }
+                  link="/profile"
+                />
+              </>
             )}
-          </ul>
-        </div>
-      </div>
-    </aside>
+          </List>
+        </Box>
+      </SwipeableDrawer>
+    </>
   );
-}
+};
 
 export default SideBar;
