@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
-import BookItem from "./BookItem";
 import BookItemForm from "./BookItemForm";
+import BookListTabContent from "./BookListTabContent";
+import TabPanel from "../common/TabPanel";
 import Loading from "../common/Loading";
 import "./MyBookList.css";
 
 export const MyBookList = ({ loggedUser, books, loading }) => {
   const [rentedBooks, setRentedBooks] = useState([]);
   const [providedBooks, setProvidedBooks] = useState([]);
+  const [value, setValue] = React.useState(0);
 
   useEffect(() => {
     if (loggedUser) {
@@ -29,89 +34,61 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
     }
   }, [loggedUser, books]);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="bootstrap-tabs">
-                <nav>
-                  <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button
-                      className="nav-link active"
-                      id="nav-home-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-home"
-                      type="button"
-                      role="tab"
-                      aria-controls="nav-home"
-                      aria-selected="true"
-                    >
-                      Наети от мен
-                    </button>
-                    <button
-                      className="nav-link"
-                      id="nav-profile-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-profile"
-                      type="button"
-                      role="tab"
-                      aria-controls="nav-profile"
-                      aria-selected="false"
-                    >
-                      Публикувани от мен
-                    </button>
-                    <button
-                      className="nav-link"
-                      id="nav-contact-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-contact"
-                      type="button"
-                      role="tab"
-                      aria-controls="nav-contact"
-                      aria-selected="false"
-                    >
-                      Качи книга
-                    </button>
-                  </div>
-                </nav>
-                <div className="tab-content" id="nav-tabContent">
-                  <div
-                    className="tab-pane fade show active"
-                    id="nav-home"
-                    role="tabpanel"
-                    aria-labelledby="nav-home-tab"
-                  >
-                    {rentedBooks?.map(function (book, i) {
-                      return <BookItem book={book} key={i}></BookItem>;
-                    })}
-                  </div>
-                  <div
-                    className="tab-pane fade"
-                    id="nav-profile"
-                    role="tabpanel"
-                    aria-labelledby="nav-profile-tab"
-                  >
-                    {providedBooks?.map(function (book, i) {
-                      return <BookItem book={book} key={i}></BookItem>;
-                    })}
-                  </div>
-                  <div
-                    className="tab-pane fade"
-                    id="nav-contact"
-                    role="tabpanel"
-                    aria-labelledby="nav-contact-tab"
-                  >
-                    <BookItemForm />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Box sx={{ width: "100%", bgcolor: "#f3f2ec" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            centered
+            sx={{
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#908f8c",
+              },
+            }}
+          >
+            <Tab
+              label="Наети книги"
+              sx={{
+                "&.Mui-selected": {
+                  color: "#908f8c",
+                },
+              }}
+            />
+            <Tab
+              label="Публикувани книги"
+              sx={{
+                "&.Mui-selected": {
+                  color: "#908f8c",
+                },
+              }}
+            />
+            <Tab
+              label="Качи книга"
+              sx={{
+                "&.Mui-selected": {
+                  color: "#908f8c",
+                },
+              }}
+            />
+          </Tabs>
+          <TabPanel value={value} index={0}>
+            <BookListTabContent books={rentedBooks} />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <BookListTabContent books={providedBooks} />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <BookItemForm />
+          </TabPanel>
+        </Box>
       )}
     </>
   );

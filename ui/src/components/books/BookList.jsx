@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import Box from "@mui/material/Box";
+import ImageList from "@mui/material/ImageList";
 
-import BookItem from "./BookItem";
 import Loading from "../common/Loading";
-import "./BookList.css";
+import BookListItem from "./BookListItem";
 
 export const BookList = ({ searchBooks, loading }) => {
   if (loading) {
@@ -12,15 +13,28 @@ export const BookList = ({ searchBooks, loading }) => {
 
   return (
     <>
-      {searchBooks.length === 0 ? (
-        <h1 style={{ textAlign: "center" }}>Няма резултати от търсенето!</h1>
-      ) : (
-        <div className="book-list-wrapper">
-          {searchBooks.map((book) => (
-            <BookItem book={book} key={book._id} />
+      <Box
+        sx={{
+          marginTop: "100px",
+          marginLeft: "10%",
+          width: "80%",
+          height: "100%",
+          overflow: "hidden",
+        }}
+      >
+        <ImageList
+          variant="woven"
+          cols={3}
+          gap={8}
+          sx={{
+            overflow: "hidden",
+          }}
+        >
+          {searchBooks.map((item) => (
+            <BookListItem key={item.id} book={item} />
           ))}
-        </div>
-      )}
+        </ImageList>
+      </Box>
     </>
   );
 };

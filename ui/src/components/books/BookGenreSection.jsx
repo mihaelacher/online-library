@@ -4,14 +4,13 @@ import { connect } from "react-redux";
 import Loading from "../common/Loading";
 import BookGenreTabs from "./BookGenreTabs";
 import { groupByGenre } from "../../utils/books/bookMapService";
-import "./BookGenreSection.css";
 
 export const BookGenreSection = ({ books, loading }) => {
   const [booksByGenre, setBooksByGenre] = useState(null);
   const [genres, setGenres] = useState(null);
 
   useEffect(() => {
-    const booksByGenre = groupByGenre(Object.values(books), 4);
+    const booksByGenre = groupByGenre(Object.values(books));
     setBooksByGenre(booksByGenre);
     setGenres(Object.keys(booksByGenre));
   }, [books]);

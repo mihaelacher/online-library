@@ -38,9 +38,13 @@ export const BookRatingReel = ({ rating, books, users }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  console.log(users[rating.username]);
   return (
     <Card
-      sx={{ maxWidth: 700 }}
+      sx={{
+        maxWidth: 700,
+        backgroundColor: "#f7f6f4",
+      }}
       style={{
         marginBottom: "100px",
         boxShadow: "10px 10px 30px 10px rgba(0, 0, 0, 0.1)",
@@ -48,9 +52,7 @@ export const BookRatingReel = ({ rating, books, users }) => {
     >
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} src={users[rating.username].pic}>
-            R
-          </Avatar>
+          <Avatar alt="userpic" src={users[rating.username].pic}></Avatar>
         }
         title={users[rating.username].username}
         subheader={

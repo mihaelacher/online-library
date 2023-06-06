@@ -39,7 +39,7 @@ const SideBar = () => {
         onOpen={toggleDrawer(true)}
       >
         <Box
-          sx={{ width: 250 }}
+          sx={{ width: 250, backgroundColor: "#f7f6f4" }}
           role="presentation"
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}

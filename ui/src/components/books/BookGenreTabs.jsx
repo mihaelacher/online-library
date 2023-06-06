@@ -1,47 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 
-import BookItemsRow from "./BookItemsRow";
+import TabPanel from "../common/TabPanel";
+import BookListTabContent from "./BookListTabContent";
 
 function BookGenreTabs({ genres, booksByGenre }) {
-  const [selectedGenre, setSelectedGerne] = useState(null);
-  const _setSelectedGerne = (e) => {
-    setSelectedGerne(e.target.id);
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
     <>
-      <ul className="tabs">
-        {genres &&
-          genres.map(function (genre, i) {
-            return (
-              <li
-                id={genre}
-                onClick={_setSelectedGerne}
-                className={`tab ${
-                  (i === 0 && selectedGenre == null) || selectedGenre === genre
-                    ? "active"
-                    : ""
-                }`}
-              >
-                {genre}
-              </li>
-            );
-          })}
-      </ul>
+      <Box sx={{ width: "100%", bgcolor: "#f3f2ec" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          centered
+          sx={{
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#908f8c",
+            },
+          }}
+        >
+          {genres &&
+            genres.map(function (genre, i) {
+              return (
+                <Tab
+                  key={i}
+                  label={genre}
+                  sx={{
+                    "&.Mui-selected": {
+                      color: "#908f8c",
+                    },
+                  }}
+                />
+              );
+            })}
+        </Tabs>
+      </Box>
       {genres &&
         genres.map(function (genre, genreIndex) {
-          return booksByGenre[genre].map(function (bookRow, i) {
-            return (
-              <BookItemsRow
-                key={i}
-                books={bookRow}
-                isActive={
-                  (genreIndex === 0 && selectedGenre == null) ||
-                  selectedGenre === genre
-                }
-              ></BookItemsRow>
-            );
-          });
+          return (
+            <TabPanel value={value} index={genreIndex}>
+              <BookListTabContent books={booksByGenre[genre]} max={8} />
+            </TabPanel>
+          );
         })}
     </>
   );

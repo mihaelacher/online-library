@@ -58,7 +58,7 @@ export const BookFavorites = ({
           {loggedUser.favorites.map(function (bookId) {
             return (
               <Card
-                sx={{ maxWidth: 700 }}
+                sx={{ maxWidth: 700, backgroundColor: "#f7f6f4" }}
                 style={{
                   marginBottom: "100px",
                   boxShadow: "10px 10px 30px 10px rgba(0, 0, 0, 0.1)",

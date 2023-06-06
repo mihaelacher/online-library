@@ -16,9 +16,9 @@ export function groupByGenre(books, rows = null) {
     for (const genreKey in bookGenres) {
       let currentGenre = bookGenres[genreKey];
       if (!booksGroupedByGenre[currentGenre]) {
-        booksGroupedByGenre[currentGenre] = {};
+        booksGroupedByGenre[currentGenre] = [];
       }
-      booksGroupedByGenre[currentGenre][i] = books[i];
+      booksGroupedByGenre[currentGenre].push(books[i]);
     }
   }
 

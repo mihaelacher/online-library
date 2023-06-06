@@ -82,7 +82,7 @@ export function* fetchBooksSaga(action) {
 
 export function* fetchSearchBooksSaga(action) {
   const { searchText } = action;
-  let searchBooks = yield select((state) => state.books);
+  let searchBooks = yield select((state) => Object.values(state.books));
   if (searchText.length) {
     searchBooks = searchBooks.filter(
       (book) =>

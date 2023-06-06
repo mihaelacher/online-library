@@ -5,7 +5,6 @@ import Loading from "../common/Loading";
 import BookGenreTabs from "./BookGenreTabs";
 import { groupByGenre } from "../../utils/books/bookMapService";
 import { intersect } from "../../utils/common/arrUtil";
-import "./BookGenreSection.css";
 
 export const PromoBookSection = ({ books, loggedUser, loading }) => {
   const [booksByGenre, setBooksByGenre] = useState(null);
@@ -24,7 +23,7 @@ export const PromoBookSection = ({ books, loggedUser, loading }) => {
       return;
     }
 
-    const booksByGenre = groupByGenre(promoBooks, 4);
+    const booksByGenre = groupByGenre(promoBooks);
     setBooksByGenre(booksByGenre);
     setGenres(Object.keys(booksByGenre));
   }, [books, loggedUser]);
