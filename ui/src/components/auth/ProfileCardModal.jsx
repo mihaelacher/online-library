@@ -1,39 +1,30 @@
 import React from "react";
-import ReactModal from "react-modal";
+import Modal from "@mui/material/Modal";
 
 import { ConnectedProfileCard } from "./ProfileCard";
+import { Box } from "@mui/material";
 
-const ProfileCardModal = ({ isOpen, setIsOpen, username }) => {
-  const customStyles = {
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "28%",
-      height: "55%",
-      padding: 0,
-      border: 0,
-      borderRadius: 0,
-      overflow: "auto",
-      zIndex: 100,
-    },
-  };
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 450,
+  height: 270,
+  bgcolor: "#f7f6f4",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  overflow: "auto",
+};
+
+const ProfileCardModal = ({ open, handleClose, username }) => {
   return (
-    <ReactModal
-      isOpen={isOpen}
-      contentLabel="Profile Card Modal"
-      onRequestClose={() => setIsOpen(false)}
-      ariaHideApp={false}
-      style={customStyles}
-    >
-      <ConnectedProfileCard username={username} />
-    </ReactModal>
+    <Modal open={open} onClose={handleClose}>
+      <Box sx={style}>
+        <ConnectedProfileCard username={username} />
+      </Box>
+    </Modal>
   );
 };
 

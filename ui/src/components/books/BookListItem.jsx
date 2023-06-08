@@ -8,15 +8,20 @@ import BookItemModal from "./BookItemModal";
 import BookRating from "../common/BookRating";
 import BookFavoriteIcon from "../common/BookFavoriteIcon";
 
-export const BookListItem = ({ book }) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const BookListItem = ({ book, itemSize }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const { addItem } = useCart();
 
   return (
     <>
-      <ImageListItem key={book.cover_url}>
+      <ImageListItem
+        key={book.cover_url}
+        sx={{ width: itemSize, height: itemSize }}
+      >
         <img
-          onClick={() => setIsOpen(true)}
+          onClick={() => handleOpen(true)}
           src={`${book.cover_url}?w=248&fit=crop&auto=format`}
           srcSet={`${book.cover_url}?w=248&fit=crop&auto=format&dpr=2 2x`}
           alt={book.title}
@@ -39,8 +44,8 @@ export const BookListItem = ({ book }) => {
       </ImageListItem>
       <BookItemModal
         book={book}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        open={open}
+        handleClose={handleClose}
         addItem={addItem}
       ></BookItemModal>
     </>

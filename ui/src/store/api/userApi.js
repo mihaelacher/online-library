@@ -48,7 +48,6 @@ export const unfollowUserApi = async (follower, following, token) => {
 
 export const addToFavoritesApi = async (username, bookId, token) => {
   try {
-    console.log(bookId);
     const response = await axios.post(
       `${apiUrl}/user/addToFavorites/${bookId}`,
       { username: username },

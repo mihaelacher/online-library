@@ -8,31 +8,32 @@ import BookItemForm from "./BookItemForm";
 import BookListTabContent from "./BookListTabContent";
 import TabPanel from "../common/TabPanel";
 import Loading from "../common/Loading";
-import "./MyBookList.css";
 
-export const MyBookList = ({ loggedUser, books, loading }) => {
+export const MyBookList = ({ loggedUser, profileUser, books, loading }) => {
   const [rentedBooks, setRentedBooks] = useState([]);
   const [providedBooks, setProvidedBooks] = useState([]);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   useEffect(() => {
-    if (loggedUser) {
-      const rentedBooks = loggedUser?.orders
-        ?.map(({ bookIds }) => bookIds)
-        .flat();
-      setRentedBooks(
-        Object.values(books).filter((book) => {
-          return rentedBooks?.includes(book.id);
-        })
-      );
+    if (profileUser) {
+      if (profileUser.username === loggedUser.nickname) {
+        const rentedBooks = profileUser?.orders
+          ?.map(({ bookIds }) => bookIds)
+          .flat();
+        setRentedBooks(
+          Object.values(books).filter((book) => {
+            return rentedBooks?.includes(book.id);
+          })
+        );
+      }
 
       setProvidedBooks(
         Object.values(books).filter(
-          (book) => book.provider === loggedUser?.username
+          (book) => book.provider === profileUser?.username
         )
       );
     }
-  }, [loggedUser, books]);
+  }, [profileUser, loggedUser, books]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -55,14 +56,6 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
             }}
           >
             <Tab
-              label="Наети книги"
-              sx={{
-                "&.Mui-selected": {
-                  color: "#908f8c",
-                },
-              }}
-            />
-            <Tab
               label="Публикувани книги"
               sx={{
                 "&.Mui-selected": {
@@ -70,24 +63,40 @@ export const MyBookList = ({ loggedUser, books, loading }) => {
                 },
               }}
             />
-            <Tab
-              label="Качи книга"
-              sx={{
-                "&.Mui-selected": {
-                  color: "#908f8c",
-                },
-              }}
-            />
+            {profileUser?.username === loggedUser?.nickname && [
+              <Tab
+                key={1}
+                label="Наети книги"
+                sx={{
+                  "&.Mui-selected": {
+                    color: "#908f8c",
+                  },
+                }}
+              />,
+              <Tab
+                key={2}
+                label="Качи книга"
+                sx={{
+                  "&.Mui-selected": {
+                    color: "#908f8c",
+                  },
+                }}
+              />,
+            ]}
           </Tabs>
           <TabPanel value={value} index={0}>
-            <BookListTabContent books={rentedBooks} />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
             <BookListTabContent books={providedBooks} />
           </TabPanel>
-          <TabPanel value={value} index={2}>
-            <BookItemForm />
-          </TabPanel>
+          {profileUser?.username === loggedUser?.nickname && (
+            <>
+              <TabPanel value={value} index={1}>
+                <BookListTabContent books={rentedBooks} />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <BookItemForm />
+              </TabPanel>
+            </>
+          )}
         </Box>
       )}
     </>

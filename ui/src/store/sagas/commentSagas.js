@@ -28,7 +28,6 @@ export function* fetchCommentsSaga() {
   yield put(beginApiCall());
   try {
     const data = yield call(api.fetchCommentsApi);
-    console.log(data);
     yield put(commentMutations.fetchCommentsSuccess(data));
   } catch (error) {
     yield put(commentMutations.fetchCommentsFailed(error.message));

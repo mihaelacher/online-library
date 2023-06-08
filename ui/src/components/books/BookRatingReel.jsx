@@ -38,7 +38,7 @@ export const BookRatingReel = ({ rating, books, users }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(users[rating.username]);
+
   return (
     <Card
       sx={{

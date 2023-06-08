@@ -262,9 +262,8 @@ img {
 @supports (display: grid) {
   .profile {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 0.7fr 2fr;
     grid-template-rows: repeat(3, auto);
-    grid-column-gap: 3rem;
     align-items: center;
   }
 

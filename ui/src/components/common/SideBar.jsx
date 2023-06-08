@@ -61,7 +61,7 @@ const SideBar = () => {
               key="suggestions"
               text="Предложения"
               icon={<AssistantRoundedIcon />}
-              link="/books"
+              link="/browse"
             />
             <SideBarListItem
               key="search"

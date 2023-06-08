@@ -47,7 +47,7 @@ export const CommentSection = ({ bookId, comments, requestBookComment }) => {
   };
 
   return (
-    <div className="coment-bottom bg-white p-2 px-4">
+    <div className="coment-bottom">
       {isAuthenticated && (
         <div className="d-flex flex-row add-comment-section mt-4 mb-4">
           <img

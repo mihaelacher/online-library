@@ -2,14 +2,26 @@ import React from "react";
 import Talk from "talkjs";
 import { connect } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import GroupAddRoundedIcon from "@mui/icons-material/GroupAddRounded";
+import GroupRemoveRoundedIcon from "@mui/icons-material/GroupRemoveRounded";
+import ChatRoundedIcon from "@mui/icons-material/ChatRounded";
 
 import Loading from "../common/Loading";
 import {
   requestFollowUser,
   requestUnfollowUser,
 } from "../../store/mutations/userMutations";
-import "./ProfileCard.css";
+
+const clickableStyle = {
+  cursor: "pointer",
+};
 
 const ProfileCard = ({
   username,
@@ -20,6 +32,7 @@ const ProfileCard = ({
   requestUnfollowUser,
 }) => {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
 
   if (loading) {
     return <Loading />;
@@ -79,60 +92,69 @@ const ProfileCard = ({
   };
 
   const isFollowing = () => {
-    return profileUser.followers.includes(loggedUser?.nickname);
+    return profileUser?.followers?.includes(loggedUser?.nickname);
+  };
+
+  const navigateToProfile = (username) => {
+    navigate("/profile/" + username);
   };
 
   return (
-    <div className="profile-card-container">
-      <div className="team-member text-center">
-        <h3>Профил</h3>
-        <figure>
-          <img src={profileUser?.pic} alt="post" className="member-image" />
-        </figure>
-
-        <div className="member-details text-center">
-          <h4> {profileUser?.username}</h4>
-          <div className="designation colored">
-            Последвал: {profileUser?.following?.length}
-          </div>
-          <div className="designation colored">
+    <Card sx={{ display: "flex", bgcolor: "#f7f6f4" }}>
+      <CardMedia
+        component="img"
+        sx={{ width: 151, ...clickableStyle }}
+        src={profileUser?.pic}
+        alt="profilePic"
+        onClick={() => navigateToProfile(profileUser.username)}
+      />
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <CardContent sx={{ flex: "1 0 auto" }}>
+          <Typography component="div" variant="h5">
+            {profileUser?.username}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            component="div"
+          >
             Последователи: {profileUser?.followers?.length}
-          </div>
-        </div>
-        {isAuthenticated && !isMyProfile() && (
-          <button
-            type="button"
-            className="btn btn-outline-light"
-            style={{ marginRight: "5px" }}
-            onClick={sendMessage}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            component="div"
           >
-            <FontAwesomeIcon
-              style={{ width: "2em" }}
-              icon="fa-solid fa-comments"
-            />
-          </button>
-        )}
-        {isAuthenticated && !isMyProfile() && (
-          <button
-            type="button"
-            className="btn btn-outline-light"
-            onClick={isFollowing() ? unFollowUser : followUser}
-          >
-            {isFollowing() ? (
-              <FontAwesomeIcon
-                style={{ width: "1em" }}
-                icon="fa-solid fa-person-circle-minus"
-              />
-            ) : (
-              <FontAwesomeIcon
-                style={{ width: "2em" }}
-                icon="fa-solid fa-person-circle-plus"
-              />
-            )}
-          </button>
-        )}
-      </div>
-    </div>
+            Последвал: {profileUser?.following?.length}
+          </Typography>
+        </CardContent>
+        <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+          {isAuthenticated && !isMyProfile() && (
+            <>
+              <IconButton aria-label="previous">
+                {!isFollowing() ? (
+                  <GroupAddRoundedIcon
+                    onClick={followUser}
+                    sx={{ clickableStyle }}
+                  />
+                ) : (
+                  <GroupRemoveRoundedIcon
+                    onClick={unFollowUser}
+                    sx={{ clickableStyle }}
+                  />
+                )}
+              </IconButton>
+              <IconButton aria-label="next">
+                <ChatRoundedIcon
+                  onClick={sendMessage}
+                  sx={{ clickableStyle }}
+                />
+              </IconButton>
+            </>
+          )}
+        </Box>
+      </Box>
+    </Card>
   );
 };
 

@@ -29,6 +29,9 @@ const Footer = () => {
                     <Link to="/">Начало </Link>
                   </li>
                   <li className="menu-item">
+                    <Link to="/browse">Предложения</Link>
+                  </li>
+                  <li className="menu-item">
                     <Link to="/books">Търси книги </Link>
                   </li>
                 </ul>
@@ -42,6 +45,15 @@ const Footer = () => {
                     <>
                       <li className="menu-item">
                         <Link to="/profile">Моят профил</Link>
+                      </li>
+                      <li className="menu-item">
+                        <Link to="/reels">Актуално</Link>
+                      </li>
+                      <li className="menu-item">
+                        <Link to="/favorites">Любими</Link>
+                      </li>
+                      <li className="menu-item">
+                        <Link to="/chatbox">Съобщения</Link>
                       </li>
                       <li className="menu-item">
                         <Link onClick={logout}>Изход</Link>

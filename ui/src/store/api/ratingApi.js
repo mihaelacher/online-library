@@ -6,7 +6,6 @@ const apiUrl = "http://localhost:3001";
 export const fetchRatingsApi = async () => {
   try {
     const response = await axios.get(`${apiUrl}/ratings`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(error);

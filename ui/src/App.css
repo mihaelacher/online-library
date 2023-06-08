@@ -2603,7 +2603,7 @@ body.chocolat-open > .chocolat-image-wrapper {
   color: #777;
 }
 .stellarnav ul {
-  margin: 0;
+  margin: 40px;
   padding: 0;
   text-align: right;
 }
@@ -3125,7 +3125,7 @@ body.stellarnav-noscroll-x {
   width: 100%;
   border-top: 2px solid red;
   position: absolute;
-  bottom: 0;
+  bottom: 14px;
   left: 0;
   transform: rotate(-7deg);
 }

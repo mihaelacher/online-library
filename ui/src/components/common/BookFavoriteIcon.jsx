@@ -27,7 +27,7 @@ export const BookFavoriteIcon = ({
 
   const handleFavoritesClick = async () => {
     const token = await getAccessTokenSilently();
-    console.log(bookId);
+
     if (isFavorite) {
       requestRemoveFromFavorites(loggedUser.username, bookId, token);
       setIsFavorite(false);

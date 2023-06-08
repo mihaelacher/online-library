@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "react-use-cart";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -10,7 +10,6 @@ import "normalize.css";
 
 import AuthProvider from "./providers/AuthProvider";
 import HomeRoutes from "./routes/HomeRoutes";
-import ProfileRoutes from "./routes/ProfileRoutes";
 import OrderRoutes from "./routes/OrderRoutes";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import NotFound from "./components/error-page/NotFound";
@@ -31,7 +30,6 @@ export default function App() {
               <AuthProvider>
                 <Routes>
                   {HomeRoutes}
-                  {ProfileRoutes}
                   {OrderRoutes}
                   <Route path="/404" element={<NotFound />} />
                   <Route path="*" element={<NotFound />} />

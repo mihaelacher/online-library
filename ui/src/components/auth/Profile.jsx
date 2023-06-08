@@ -1,33 +1,44 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import Avatar from "@mui/material/Avatar";
 
 import MyBookList from "../books/MyBookList";
 import Loading from "../common/Loading";
 import "./Profile.css";
 
-const Profile = ({ loggedUser, books, loading }) => {
+const Profile = ({ users, books, loading }) => {
   const { user } = useAuth0();
+  const { username } = useParams();
+  const [profileUser, setProfileUser] = useState(null);
   const [providedBooksCount, setProvidedBooksCount] = useState(0);
 
   useEffect(() => {
-    if (loggedUser) {
+    const profileUsername = username ?? user?.nickname;
+    if (profileUsername && users) {
+      setProfileUser(users[profileUsername]);
+
       const providedBooks = Object.values(books)?.filter(
-        (book) => book.provider === loggedUser?.username
+        (book) => book.provider === profileUsername
       );
       setProvidedBooksCount(providedBooks?.length);
     }
-  }, [loggedUser, books]);
+  }, [username, users, books, user]);
 
   return (
     <div class="container">
       <div class="profile">
         <div class="profile-image">
-          <img src={user.picture} alt="profilepic" />
+          <Avatar
+            alt="profilepic"
+            src={profileUser?.pic}
+            sx={{ width: 120, height: 120 }}
+          />
         </div>
 
         <div class="profile-user-settings">
-          <h1 class="profile-user-name">{user.nickname}</h1>
+          <h1 class="profile-user-name">{profileUser?.username}</h1>
         </div>
 
         {!loading && (
@@ -35,25 +46,34 @@ const Profile = ({ loggedUser, books, loading }) => {
             <ul>
               <li>
                 <span class="profile-stat-count">{providedBooksCount}</span>{" "}
-                книги
+                публикувани книги
+              </li>
+              <li>
+                <span class="profile-stat-count">{providedBooksCount}</span>{" "}
+                наети книги
               </li>
               <li>
                 <span class="profile-stat-count">
-                  {loggedUser?.followers?.length}
+                  {profileUser?.followers?.length ?? 0}
                 </span>{" "}
                 последователи
               </li>
               <li>
                 <span class="profile-stat-count">
-                  {loggedUser?.following?.length}
+                  {profileUser?.following?.length ?? 0}
                 </span>{" "}
-                следвам
+                следва
               </li>
             </ul>
           </div>
         )}
       </div>
-      <MyBookList loggedUser={loggedUser} books={books} loading={loading} />
+      <MyBookList
+        loggedUser={user}
+        profileUser={profileUser}
+        books={books}
+        loading={loading}
+      />
     </div>
   );
 };
@@ -61,7 +81,7 @@ const Profile = ({ loggedUser, books, loading }) => {
 function mapStateToProps(state) {
   return {
     books: state.books,
-    loggedUser: state.loggedUser,
+    users: state.users,
     loading: state.apiCallsInProgress > 0,
   };
 }

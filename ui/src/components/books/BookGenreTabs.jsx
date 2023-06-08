@@ -46,7 +46,7 @@ function BookGenreTabs({ genres, booksByGenre }) {
         genres.map(function (genre, genreIndex) {
           return (
             <TabPanel value={value} index={genreIndex}>
-              <BookListTabContent books={booksByGenre[genre]} max={8} />
+              <BookListTabContent books={booksByGenre[genre]} maxIndex={5} />
             </TabPanel>
           );
         })}

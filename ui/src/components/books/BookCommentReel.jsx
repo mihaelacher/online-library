@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "react-use-cart";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -38,10 +39,15 @@ export const BookCommentReel = ({
 }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const { addItem } = useCart();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const navigateToProfile = (username) => {
+    navigate("/profile/" + username);
   };
 
   return (
@@ -53,6 +59,8 @@ export const BookCommentReel = ({
       }}
     >
       <CardHeader
+        style={{ cursor: "pointer" }}
+        onClick={() => navigateToProfile(comment.username)}
         avatar={
           <Avatar alt="userpic" src={users[comment.username].pic}></Avatar>
         }

@@ -2,7 +2,17 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Talk from "talkjs";
 import Badge from "@mui/material/Badge";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import Tooltip from "@mui/material/Tooltip";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#c5a992",
+    },
+  },
+});
 
 const UnreadMessage = ({ loggedUser }) => {
   const [unreadCount, setUnreadCount] = useState(0);
@@ -46,13 +56,22 @@ const UnreadMessage = ({ loggedUser }) => {
   }, [loggedUser]);
 
   return (
-    <Badge
-      badgeContent={unreadCount}
-      color="primary"
-      style={{ marginRight: "10px", cursor: "pointer" }}
-    >
-      <TelegramIcon />
-    </Badge>
+    <ThemeProvider theme={theme}>
+      <Badge
+        badgeContent={unreadCount}
+        color="primary"
+        style={{ marginRight: "10px", cursor: "pointer" }}
+        sx={{
+          "& .MuiBadge-badge": {
+            color: "#fff",
+          },
+        }}
+      >
+        <Tooltip title="Съобщения" placement="bottom">
+          <TelegramIcon />
+        </Tooltip>
+      </Badge>
+    </ThemeProvider>
   );
 };
 
